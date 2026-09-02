@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Surtimayoreo Sophy Candy S.A. - Dulces, chocolates y golosinas mexicanas y americanas al mayoreo y menudeo. Envíos a toda Guatemala desde Quetzaltenango." />
+  <meta name="theme-color" content="#a50f44" />
+  <title>Surtimayoreo Sophy Candy S.A. | Dulces al Mayoreo y Menudeo</title>
+  <style>
+    :root{
+      --wine:#8f123e;
+      --wine-dark:#5d0b29;
+      --berry:#c81f5f;
+      --pink:#ffe8f1;
+      --cream:#fff9f3;
+      --gold:#f5b744;
+      --ink:#24151d;
+      --muted:#6d5962;
+      --white:#ffffff;
+      --line:rgba(74,20,44,.10);
+      --shadow:0 18px 55px rgba(84, 19, 49, .13);
+      --radius:26px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--ink);
+      background:linear-gradient(180deg,#fff 0%,var(--cream) 58%,#fff 100%);
+      line-height:1.6;
+    }
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    .wrap{width:min(1160px,calc(100% - 36px));margin:auto}
+    .topbar{
+      background:var(--wine-dark);
+      color:#fff;
+      font-size:.9rem;
+      text-align:center;
+      padding:8px 16px;
+      letter-spacing:.01em;
+    }
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(255,255,255,.91);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--line);
+    }
+    .nav{height:78px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:-.03em}
+    .brandmark{
+      width:46px;height:46px;border-radius:16px;
+      background:conic-gradient(from 210deg,var(--wine),var(--berry),var(--gold),var(--wine));
+      box-shadow:0 10px 25px rgba(168,26,79,.23);
+      position:relative;
+    }
+    .brandmark:after{content:"S";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:1.5rem;font-family:Georgia,serif;font-weight:800}
+    .brandtext strong{display:block;font-size:1.02rem;color:var(--wine-dark)}
+    .brandtext span{display:block;font-size:.72rem;color:var(--muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+    nav{display:flex;align-items:center;gap:26px;font-weight:700;font-size:.94rem;color:#4d3a43}
+    nav a{transition:.2s ease}
+    nav a:hover{color:var(--berry)}
+    .nav-cta{background:var(--wine);color:#fff;padding:11px 17px;border-radius:999px;box-shadow:0 8px 20px rgba(143,18,62,.2)}
+    .menu-btn{display:none;border:0;background:#fff;border-radius:12px;padding:9px;box-shadow:0 4px 16px rgba(0,0,0,.08)}
+
+    .hero{padding:42px 0 22px}
+    .hero-card{
+      min-height:590px;border-radius:34px;overflow:hidden;position:relative;
+      background-image:linear-gradient(90deg,rgba(47,8,25,.88) 0%,rgba(79,8,38,.76) 40%,rgba(79,8,38,.20) 75%),url('assets/tienda-sophy-candy.png');
+      background-size:cover;background-position:center;
+      box-shadow:var(--shadow);
+      display:flex;align-items:center;
+    }
+    .hero-content{padding:68px;max-width:715px;color:#fff}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border-radius:999px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);font-weight:800;font-size:.82rem;text-transform:uppercase;letter-spacing:.08em}
+    .hero h1{font-family:Georgia, "Times New Roman", serif;font-size:clamp(3rem,7vw,5.9rem);line-height:.95;margin:22px 0 18px;letter-spacing:-.055em;max-width:660px}
+    .hero h1 em{font-style:normal;color:#ffd06e}
+    .hero p{font-size:1.13rem;max-width:580px;color:#fff6fa;margin:0 0 30px}
+    .actions{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 20px;border-radius:999px;font-weight:850;transition:.2s ease;border:1px solid transparent}
+    .btn-primary{background:#fff;color:var(--wine-dark)}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,0,0,.18)}
+    .btn-secondary{border-color:rgba(255,255,255,.45);color:#fff;background:rgba(255,255,255,.08)}
+    .btn-secondary:hover{background:rgba(255,255,255,.16)}
+    .hero-badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+    .hero-badges span{font-size:.86rem;font-weight:800;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.17)}
+
+    section{padding:78px 0}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:28px}
+    .kicker{font-size:.78rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase;color:var(--berry);margin-bottom:7px}
+    h2{font-family:Georgia,serif;font-size:clamp(2.2rem,5vw,4rem);line-height:1.05;margin:0;letter-spacing:-.045em;color:var(--wine-dark)}
+    .section-head p{max-width:540px;color:var(--muted);margin:0;font-size:1rem}
+
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .feature{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;box-shadow:0 12px 35px rgba(74,20,44,.06)}
+    .icon{width:52px;height:52px;border-radius:16px;background:linear-gradient(145deg,var(--pink),#fff2ce);display:grid;place-items:center;font-size:1.5rem;margin-bottom:18px}
+    .feature h3{margin:0 0 8px;font-size:1.16rem;color:var(--wine-dark)}
+    .feature p{margin:0;color:var(--muted)}
+
+    .category-grid{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:18px}
+    .category{position:relative;min-height:265px;border-radius:28px;overflow:hidden;padding:28px;display:flex;flex-direction:column;justify-content:end;color:#fff;box-shadow:var(--shadow)}
+    .category:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 20%,rgba(39,5,20,.84) 100%)}
+    .category > *{position:relative}
+    .category.large{grid-row:span 2;min-height:548px;background:linear-gradient(145deg,#c2185b,#711033)}
+    .category.choco{background:linear-gradient(145deg,#6c321f,#2d160e)}
+    .category.gummy{background:linear-gradient(145deg,#e35e62,#8f174e)}
+    .category.import{background:linear-gradient(145deg,#1f5b85,#17324e)}
+    .category.mayoreo{background:linear-gradient(145deg,#d99a20,#9d5a10)}
+    .category .mini{font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.11em;opacity:.86}
+    .category h3{font-family:Georgia,serif;font-size:2rem;line-height:1.05;margin:8px 0 7px}
+    .category p{margin:0;color:rgba(255,255,255,.87)}
+    .candy-dots{position:absolute;inset:0;opacity:.22;background-image:radial-gradient(circle at 10% 20%,#fff 0 4px,transparent 5px),radial-gradient(circle at 65% 12%,#fff 0 6px,transparent 7px),radial-gradient(circle at 87% 45%,#fff 0 3px,transparent 4px),radial-gradient(circle at 25% 80%,#fff 0 5px,transparent 6px);background-size:100% 100%}
+
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center}
+    .photo-card{border-radius:30px;overflow:hidden;box-shadow:var(--shadow);position:relative}
+    .photo-card img{width:100%;height:480px;object-fit:cover}
+    .photo-tag{position:absolute;left:18px;bottom:18px;background:rgba(255,255,255,.93);backdrop-filter:blur(10px);padding:14px 16px;border-radius:18px;font-weight:850;color:var(--wine-dark);box-shadow:0 8px 22px rgba(0,0,0,.15)}
+    .copy p{color:var(--muted);font-size:1.04rem}
+    .ticks{display:grid;gap:12px;margin:25px 0 30px}
+    .tick{display:flex;align-items:flex-start;gap:11px;font-weight:760;color:#4c3842}
+    .tick b{display:grid;place-items:center;flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--pink);color:var(--berry)}
+    .dark-btn{background:var(--wine);color:#fff}
+
+    .contact-wrap{background:linear-gradient(135deg,var(--wine-dark),var(--wine) 55%,#b6225c);border-radius:34px;color:#fff;padding:48px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+    .contact-wrap:after{content:"";position:absolute;width:330px;height:330px;border-radius:50%;right:-120px;top:-130px;background:rgba(255,255,255,.08)}
+    .contact-grid{position:relative;display:grid;grid-template-columns:1.2fr .8fr;gap:28px;z-index:1}
+    .contact-wrap h2{color:#fff}
+    .contact-wrap p{color:#f9dfe9;max-width:650px}
+    .info{display:grid;gap:12px;margin-top:22px}
+    .info-item{display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.12)}
+    .info-item strong{display:block;color:#fff}
+    .info-item span,.info-item a{color:#f7d9e5}
+    .contact-card{background:#fff;color:var(--ink);border-radius:26px;padding:26px;align-self:center}
+    .contact-card h3{margin:0 0 8px;color:var(--wine-dark);font-size:1.32rem}
+    .contact-card p{color:var(--muted);margin:0 0 20px}
+    .contact-card .btn{width:100%;margin-top:10px}
+    .contact-card .btn.outline{border-color:#ead2dd;color:var(--wine);background:#fff}
+    .pending{margin-top:16px;padding:13px 14px;border-radius:16px;background:#fff5f8;color:#755262;font-size:.88rem}
+
+    footer{padding:34px 0 105px;color:#7c6670}
+    .footer-row{display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid var(--line);padding-top:26px}
+    .footer-row strong{color:var(--wine-dark)}
+
+    .mobile-bar{display:none}
+    @media (max-width:900px){
+      nav{display:none;position:absolute;top:78px;left:18px;right:18px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:var(--shadow);flex-direction:column;align-items:stretch}
+      nav.open{display:flex}
+      .menu-btn{display:block}
+      .nav-cta{text-align:center}
+      .hero-card{min-height:560px;background-position:63% center}
+      .hero-content{padding:42px}
+      .features,.category-grid,.split,.contact-grid{grid-template-columns:1fr}
+      .category.large{grid-row:auto;min-height:360px}
+      .category{min-height:220px}
+      .section-head{align-items:flex-start;flex-direction:column}
+      .photo-card img{height:380px}
+    }
+    @media (max-width:620px){
+      .wrap{width:min(100% - 24px,1160px)}
+      .brandtext span{display:none}
+      .hero{padding-top:20px}
+      .hero-card{min-height:640px;border-radius:26px;background-image:linear-gradient(180deg,rgba(48,6,24,.42),rgba(48,6,24,.92) 64%),url('assets/tienda-sophy-candy.png');background-position:center top;align-items:end}
+      .hero-content{padding:30px 24px 34px}
+      .hero h1{font-size:clamp(2.7rem,15vw,4.4rem)}
+      section{padding:60px 0}
+      .contact-wrap{padding:30px 22px;border-radius:26px}
+      .footer-row{flex-direction:column;align-items:flex-start}
+      .mobile-bar{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:fixed;left:12px;right:12px;bottom:12px;z-index:70;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border:1px solid var(--line);padding:10px;border-radius:20px;box-shadow:0 15px 40px rgba(65,10,35,.2)}
+      .mobile-bar a{display:flex;justify-content:center;align-items:center;gap:8px;border-radius:14px;padding:12px 10px;font-weight:900;font-size:.9rem}
+      .mobile-bar a:first-child{background:var(--wine);color:#fff}
+      .mobile-bar a:last-child{background:#fff4d8;color:#7b4c08}
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">Ventas al mayoreo y menudeo · Envíos a todo Guatemala</div>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#inicio" aria-label="Surtimayoreo Sophy Candy S.A.">
+        <span class="brandmark" aria-hidden="true"></span>
+        <span class="brandtext">
+          <strong>Surtimayoreo Sophy Candy</strong>
+          <span>Dulces · Chocolates · Golosinas</span>
+        </span>
+      </a>
+      <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false">☰</button>
+      <nav id="navMenu">
+        <a href="#productos">Productos</a>
+        <a href="#mayoreo">Mayoreo</a>
+        <a href="#nosotros">Nosotros</a>
+        <a href="#contacto">Contacto</a>
+        <a class="nav-cta" href="tel:+50230316080">Llamar ahora</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="wrap">
+        <div class="hero-card">
+          <div class="hero-content">
+            <span class="eyebrow">📍 Quetzaltenango · Guatemala</span>
+            <h1>El sabor que <em>vende más.</em></h1>
+            <p>Amplia variedad de dulces, chocolates y golosinas mexicanas y americanas para negocios, tiendas, eventos y clientes que buscan surtirse bien.</p>
+            <div class="actions">
+              <a class="btn btn-primary" href="tel:+50230316080">📞 Cotizar por teléfono</a>
+              <a class="btn btn-secondary" href="https://maps.app.goo.gl/5Gw4ytcqAgXtNnL86?g_st=ic" target="_blank" rel="noopener">📍 Cómo llegar</a>
+            </div>
+            <div class="hero-badges">
+              <span>Mayoreo</span><span>Menudeo</span><span>Envíos nacionales</span><span>Productos importados</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="kicker">Todo para surtir tu negocio</div>
+            <h2>Variedad, buen precio y atención directa.</h2>
+          </div>
+          <p>Atendemos compras al mayoreo y menudeo desde Quetzaltenango, con opciones ideales para tiendas, distribuidores, revendedores y consumidores finales.</p>
+        </div>
+        <div class="features">
+          <article class="feature">
+            <div class="icon">🍬</div>
+            <h3>Gran surtido</h3>
+            <p>Dulces, chocolates, gomitas, golosinas y productos importados para diferentes gustos y presupuestos.</p>
+          </article>
+          <article class="feature">
+            <div class="icon">📦</div>
+            <h3>Mayoreo y menudeo</h3>
+            <p>Compra para tu negocio o para consumo personal. Te ayudamos a elegir cantidades según lo que necesites.</p>
+          </article>
+          <article class="feature">
+            <div class="icon">🚚</div>
+            <h3>Envíos a todo el país</h3>
+            <p>Despachamos pedidos desde Quetzaltenango hacia diferentes departamentos de Guatemala.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="productos">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="kicker">Nuestro surtido</div>
+            <h2>Productos que llaman la atención.</h2>
+          </div>
+          <p>Una presentación visual pensada para que tus clientes descubran rápidamente lo que pueden encontrar en Sophy Candy.</p>
+        </div>
+        <div class="category-grid">
+          <article class="category large">
+            <div class="candy-dots"></div>
+            <div class="mini">Favoritos para compartir</div>
+            <h3>Dulces & golosinas</h3>
+            <p>Colores, sabores y presentaciones para todas las edades.</p>
+          </article>
+          <article class="category choco">
+            <div class="candy-dots"></div>
+            <div class="mini">Irresistibles</div>
+            <h3>Chocolates</h3>
+            <p>Opciones clásicas, importadas y de alta rotación.</p>
+          </article>
+          <article class="category gummy">
+            <div class="candy-dots"></div>
+            <div class="mini">Color y sabor</div>
+            <h3>Gomitas</h3>
+            <p>Variedad ideal para vitrinas y mostradores.</p>
+          </article>
+          <article class="category import">
+            <div class="candy-dots"></div>
+            <div class="mini">Selección especial</div>
+            <h3>Mexicanos & americanos</h3>
+            <p>Productos que aportan variedad y diferenciación a tu negocio.</p>
+          </article>
+          <article class="category mayoreo">
+            <div class="candy-dots"></div>
+            <div class="mini">Para tu negocio</div>
+            <h3>Precios de mayoreo</h3>
+            <p>Consulta disponibilidad, presentaciones y cantidades.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="mayoreo">
+      <div class="wrap split">
+        <div class="photo-card">
+          <img src="assets/tienda-sophy-candy.png" alt="Variedad de dulces y golosinas disponibles en Surtimayoreo Sophy Candy" />
+          <div class="photo-tag">Surtido listo para tu negocio ✨</div>
+        </div>
+        <div class="copy">
+          <div class="kicker">Ventas al mayoreo</div>
+          <h2>Surtimos tu tienda con productos que se mueven.</h2>
+          <p>Si tienes tienda, abarrotería, distribuidora, kiosco, negocio de fiestas o reventa, puedes consultar nuestros productos y opciones de compra al mayoreo.</p>
+          <div class="ticks">
+            <div class="tick"><b>✓</b><span>Atención para pedidos de diferentes volúmenes.</span></div>
+            <div class="tick"><b>✓</b><span>Productos mexicanos y americanos.</span></div>
+            <div class="tick"><b>✓</b><span>Envíos a distintos puntos de Guatemala.</span></div>
+            <div class="tick"><b>✓</b><span>También atendemos compras al menudeo.</span></div>
+          </div>
+          <a class="btn dark-btn" href="tel:+50259862430">Consultar disponibilidad</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="nosotros">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="kicker">Sophy Candy S.A.</div>
+            <h2>Desde Xela, para toda Guatemala.</h2>
+          </div>
+          <p>Estamos ubicados en el sector de Terminal Minerva, Quetzaltenango. Nuestro enfoque es ofrecer variedad de dulces, chocolates y golosinas, con atención para mayoreo y menudeo.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto">
+      <div class="wrap contact-wrap">
+        <div class="contact-grid">
+          <div>
+            <div class="kicker" style="color:#ffd072">Contacto</div>
+            <h2>Haz tu consulta y empieza a surtirte.</h2>
+            <p>Comunícate para conocer existencias, presentaciones, opciones de compra y coordinación de envíos.</p>
+            <div class="info">
+              <div class="info-item">
+                <span>📍</span><div><strong>Dirección</strong><span>25 avenida B 7A-07, zona 3, Terminal Minerva, Quetzaltenango</span></div>
+              </div>
+              <div class="info-item">
+                <span>📞</span><div><strong>Teléfonos</strong><a href="tel:+50230316080">3031-6080</a> · <a href="tel:+50259862430">5986-2430</a></div>
+              </div>
+              <div class="info-item">
+                <span>🎵</span><div><strong>TikTok</strong><span>Sophycandy s.a</span></div>
+              </div>
+              <div class="info-item">
+                <span>🚚</span><div><strong>Cobertura</strong><span>Envíos a todo el país</span></div>
+              </div>
+            </div>
+          </div>
+          <aside class="contact-card">
+            <h3>¿Quieres cotizar?</h3>
+            <p>Llámanos o abre la ubicación en Google Maps.</p>
+            <a class="btn dark-btn" href="tel:+50230316080">📞 Llamar 3031-6080</a>
+            <a class="btn outline" href="https://maps.app.goo.gl/5Gw4ytcqAgXtNnL86?g_st=ic" target="_blank" rel="noopener">📍 Ver en Google Maps</a>
+            <div class="pending"><strong>Próximamente:</strong> se puede agregar aquí el botón oficial de WhatsApp y correo electrónico cuando sean confirmados.</div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-row">
+      <div><strong>Surtimayoreo Sophy Candy S.A.</strong><br />Quetzaltenango, Guatemala</div>
+      <div>© <span id="year"></span> · Dulces, chocolates y golosinas al mayoreo y menudeo.</div>
+    </div>
+  </footer>
+
+  <div class="mobile-bar" aria-label="Acciones rápidas">
+    <a href="tel:+50230316080">📞 Llamar</a>
+    <a href="https://maps.app.goo.gl/5Gw4ytcqAgXtNnL86?g_st=ic" target="_blank" rel="noopener">📍 Ubicación</a>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const btn = document.getElementById('menuBtn');
+    const nav = document.getElementById('navMenu');
+    btn.addEventListener('click', () => {
+      nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', nav.classList.contains('open'));
+    });
+    nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => nav.classList.remove('open')));
+  </script>
+</body>
+</html>
