@@ -1,3 +1,5 @@
+const { getStore } = require("@netlify/blobs");
+
 exports.handler = async function (event) {
   const VERIFY_TOKEN = process.env.WHATSAPP_VERIFY_TOKEN;
 
@@ -22,21 +24,53 @@ exports.handler = async function (event) {
     };
   }
 
-  // Recepción de eventos de WhatsApp
+  // Recepción de mensajes y eventos de WhatsApp
   if (event.httpMethod === "POST") {
     try {
       const data = JSON.parse(event.body || "{}");
 
-      console.log("WhatsApp webhook received:", JSON.stringify(data));
+      const store = getStore({
+        name: "whatsapp-messages",
+        siteID: process.env.SITE_ID,
+        token: process.env.NETLIFY_API_TOKEN
+      });
+
+      const entry =
+        data.entry?.[0]?.changes?.[0]?.value || {};
+
+      const messages = entry.messages || [];
+      const contacts = entry.contacts || [];
+
+      if (messages.length > 0) {
+        const message = messages[0];
+
+        const record = {
+          id: message.id,
+          from: message.from,
+          name: contacts[0]?.profile?.name || message.from,
+          type: message.type,
+          text: message.text?.body || "",
+          timestamp: message.timestamp,
+          receivedAt: new Date().toISOString()
+        };
+
+        await store.setJSON(
+          `message-${message.id}`,
+          record
+        );
+      }
 
       return {
         statusCode: 200,
         body: "EVENT_RECEIVED"
       };
+
     } catch (error) {
+      console.error("Webhook error:", error);
+
       return {
-        statusCode: 400,
-        body: "Invalid request"
+        statusCode: 200,
+        body: "EVENT_RECEIVED"
       };
     }
   }
