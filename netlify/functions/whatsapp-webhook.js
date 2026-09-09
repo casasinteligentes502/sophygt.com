@@ -29,11 +29,7 @@ exports.handler = async function (event) {
     try {
       const data = JSON.parse(event.body || "{}");
 
-      const store = getStore({
-        name: "whatsapp-messages",
-        siteID: process.env.SITE_ID,
-        token: process.env.NETLIFY_API_TOKEN
-      });
+      const store = getStore("whatsapp-messages");
 
       const entry =
         data.entry?.[0]?.changes?.[0]?.value || {};
