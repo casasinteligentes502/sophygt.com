@@ -62,14 +62,14 @@ export default async (request) => {
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
-  background: #f0f2f5;
+  background: #e9edef;
   color: #222;
 }
 
 header {
   background: #075e54;
   color: white;
-  padding: 18px 25px;
+  padding: 16px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -85,25 +85,20 @@ header span {
   opacity: .9;
 }
 
-.container {
+.main {
   max-width: 1100px;
-  margin: 25px auto;
+  margin: 22px auto;
   padding: 0 15px;
 }
 
 .toolbar {
   background: white;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 15px;
+  border-radius: 10px 10px 0 0;
+  padding: 14px 18px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,.08);
-}
-
-.status {
-  font-size: 14px;
+  border-bottom: 1px solid #ddd;
 }
 
 .online {
@@ -114,128 +109,110 @@ header span {
 .refresh-button {
   background: #128c7e;
   color: white;
-  border: none;
-  padding: 10px 18px;
+  border: 0;
   border-radius: 7px;
+  padding: 9px 15px;
+  font-weight: bold;
   cursor: pointer;
-  font-weight: bold;
 }
 
-.refresh-button:hover {
-  background: #0d766a;
+.chat {
+  background: #efeae2;
+  min-height: 500px;
+  max-height: 620px;
+  overflow-y: auto;
+  padding: 22px;
 }
 
-.messages {
+.message-row {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
+  margin-bottom: 12px;
 }
 
-.message-card {
+.incoming {
+  justify-content: flex-start;
+}
+
+.outgoing {
+  justify-content: flex-end;
+}
+
+.bubble {
+  max-width: 72%;
+  padding: 10px 12px 7px;
+  border-radius: 9px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.12);
+}
+
+.incoming .bubble {
   background: white;
-  border-radius: 10px;
-  padding: 18px;
-  box-shadow: 0 2px 6px rgba(0,0,0,.08);
-  border-left: 5px solid #25d366;
+  border-top-left-radius: 2px;
 }
 
-.message-header {
-  display: flex;
-  justify-content: space-between;
-  gap: 15px;
+.outgoing .bubble {
+  background: #d9fdd3;
+  border-top-right-radius: 2px;
 }
 
-.customer {
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.phone {
-  font-size: 13px;
-  color: #666;
-  margin-top: 4px;
-}
-
-.date {
+.sender {
   font-size: 12px;
-  color: #888;
-  white-space: nowrap;
+  font-weight: bold;
+  color: #087f5b;
+  margin-bottom: 5px;
 }
 
 .message-text {
-  background: #dcf8c6;
-  padding: 12px 15px;
-  border-radius: 8px;
-  margin-top: 12px;
-  line-height: 1.45;
+  font-size: 15px;
+  line-height: 1.4;
   word-break: break-word;
 }
 
-.type {
-  margin-top: 8px;
-  font-size: 12px;
-  color: #777;
+.message-time {
+  text-align: right;
+  font-size: 10px;
+  color: #667781;
+  margin-top: 5px;
 }
 
-/* RESPUESTA */
-
-.reply-box {
-  margin-top: 15px;
-  border-top: 1px solid #eee;
-  padding-top: 15px;
+.reply-area {
+  background: white;
+  padding: 15px;
+  border-radius: 0 0 10px 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
-.reply-box label {
-  display: block;
-  font-size: 13px;
-  font-weight: bold;
-  margin-bottom: 7px;
-}
-
-.reply-box textarea {
-  width: 100%;
-  min-height: 75px;
+.reply-area textarea {
+  flex: 1;
+  min-height: 55px;
+  max-height: 120px;
   resize: vertical;
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 11px;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
-  outline: none;
-}
-
-.reply-box textarea:focus {
-  border-color: #128c7e;
-}
-
-.reply-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 9px;
 }
 
 .send-button {
   background: #25d366;
-  border: none;
-  color: #fff;
-  padding: 10px 17px;
-  border-radius: 7px;
+  color: white;
+  border: 0;
+  border-radius: 8px;
+  padding: 13px 18px;
   font-weight: bold;
   cursor: pointer;
 }
 
-.send-button:hover {
-  background: #1ebe5d;
-}
-
 .send-button:disabled {
   opacity: .6;
-  cursor: wait;
 }
 
 .send-status {
+  margin: 10px 0;
   font-size: 13px;
+  min-height: 18px;
 }
 
 .success {
@@ -248,20 +225,35 @@ header span {
   font-weight: bold;
 }
 
-.empty,
-.loading {
+.contact-info {
   background: white;
-  padding: 40px;
+  padding: 12px 18px;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.contact-name {
+  font-weight: bold;
+}
+
+.contact-phone {
+  color: #666;
+  margin-top: 3px;
+}
+
+.loading,
+.empty {
   text-align: center;
-  border-radius: 10px;
+  padding: 45px;
+  color: #666;
 }
 
 footer {
   text-align: center;
-  font-size: 12px;
   color: #777;
-  margin: 30px 0;
-  line-height: 1.5;
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 24px 0;
 }
 
 @media(max-width:700px) {
@@ -269,22 +261,20 @@ footer {
   header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 6px;
+    gap: 5px;
   }
 
-  .message-header {
-    flex-direction: column;
+  .bubble {
+    max-width: 88%;
   }
 
-  .toolbar {
+  .reply-area {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+    align-items: stretch;
   }
 
-  .reply-actions {
-    flex-direction: column;
-    align-items: flex-start;
+  .send-button {
+    width: 100%;
   }
 }
 
@@ -302,51 +292,74 @@ footer {
 </div>
 
 <div>
-  WhatsApp +502 3993 5344
+  +502 3993 5344
 </div>
 
 </header>
 
-<div class="container">
+<div class="main">
 
 <div class="toolbar">
 
-<div class="status">
-
-Estado:
-<span class="online">
-● Conectado
-</span>
-
-<br>
-
-<span id="lastUpdate"></span>
-
+<div>
+  Estado:
+  <span class="online">● Conectado</span>
+  <br>
+  <small id="lastUpdate"></small>
 </div>
 
 <button
   class="refresh-button"
   onclick="loadMessages()"
 >
-Actualizar mensajes
+Actualizar
 </button>
 
 </div>
 
 <div
-  id="messages"
-  class="messages"
+  id="contactInfo"
+  class="contact-info"
 >
+Cargando conversación...
+</div>
 
+<div
+  id="chat"
+  class="chat"
+>
 <div class="loading">
 Cargando mensajes...
 </div>
+</div>
+
+<div class="reply-area">
+
+<textarea
+  id="replyText"
+  maxlength="4096"
+  placeholder="Escribe una respuesta para el cliente..."
+></textarea>
+
+<button
+  id="sendButton"
+  class="send-button"
+  onclick="sendReply()"
+>
+Enviar WhatsApp
+</button>
 
 </div>
 
+<div
+  id="sendStatus"
+  class="send-status"
+></div>
+
 <footer>
 
-Los mensajes se conservan durante un máximo de 90 días.
+Los mensajes se conservan durante un máximo de
+<strong>90 días</strong>.
 
 <br>
 
@@ -363,6 +376,10 @@ no están incluidos.
 </div>
 
 <script>
+
+let currentPhone = "";
+let currentName = "Cliente";
+
 
 function escapeHtml(value) {
 
@@ -381,123 +398,28 @@ function escapeHtml(value) {
 
 function formatDate(dateString) {
 
-  if (!dateString) {
-    return "";
-  }
+  if (!dateString) return "";
 
   const date = new Date(dateString);
 
   if (Number.isNaN(date.getTime())) {
-    return dateString;
+    return "";
   }
 
   return date.toLocaleString(
     "es-GT",
     {
-      dateStyle: "medium",
+      dateStyle: "short",
       timeStyle: "short"
     }
   );
 }
 
 
-async function sendReply(button, phone) {
-
-  const card =
-    button.closest(".message-card");
-
-  const textarea =
-    card.querySelector(".reply-text");
-
-  const status =
-    card.querySelector(".send-status");
-
-  const text =
-    textarea.value.trim();
-
-  if (!text) {
-
-    status.textContent =
-      "Escribe un mensaje antes de enviar.";
-
-    status.className =
-      "send-status error";
-
-    return;
-  }
-
-  button.disabled = true;
-  button.textContent = "Enviando...";
-
-  status.textContent = "";
-  status.className = "send-status";
-
-  try {
-
-    const response = await fetch(
-      "/.netlify/functions/whatsapp-send",
-      {
-        method: "POST",
-
-        credentials: "same-origin",
-
-        headers: {
-          "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify({
-          to: phone,
-          text: text
-        })
-      }
-    );
-
-    const result =
-      await response.json();
-
-    if (!response.ok || !result.success) {
-
-      throw new Error(
-        result.error ||
-        "No se pudo enviar el mensaje."
-      );
-    }
-
-    textarea.value = "";
-
-    status.textContent =
-      "✓ Mensaje enviado correctamente";
-
-    status.className =
-      "send-status success";
-
-  } catch (error) {
-
-    console.error(error);
-
-    status.textContent =
-      "Error: " + error.message;
-
-    status.className =
-      "send-status error";
-
-  } finally {
-
-    button.disabled = false;
-
-    button.textContent =
-      "Enviar WhatsApp";
-  }
-}
-
-
 async function loadMessages() {
 
-  const container =
-    document.getElementById("messages");
-
-  container.innerHTML =
-    '<div class="loading">Cargando mensajes...</div>';
+  const chat =
+    document.getElementById("chat");
 
   try {
 
@@ -509,17 +431,9 @@ async function loadMessages() {
       }
     );
 
-    if (response.status === 401) {
-
-      window.location.reload();
-
-      return;
-    }
-
     if (!response.ok) {
-
       throw new Error(
-        "Error " + response.status
+        "No se pudieron cargar los mensajes."
       );
     }
 
@@ -531,114 +445,120 @@ async function loadMessages() {
       messages.length === 0
     ) {
 
-      container.innerHTML =
-        '<div class="empty">No hay mensajes disponibles.</div>';
+      chat.innerHTML =
+        '<div class="empty">No hay mensajes.</div>';
 
       return;
     }
 
-    container.innerHTML = "";
+    // Orden cronológico:
+    // mensajes antiguos primero.
+    messages.sort(function(a, b) {
 
-    messages.forEach(message => {
+      return (
+        new Date(a.receivedAt).getTime() -
+        new Date(b.receivedAt).getTime()
+      );
+    });
 
-      const card =
-        document.createElement("div");
 
-      card.className =
-        "message-card";
+    // Encontrar el nombre y teléfono del cliente
+    const incomingMessage =
+      messages.find(function(message) {
+        return message.direction !== "outgoing";
+      });
 
-      const name =
-        escapeHtml(
-          message.name || "Cliente"
-        );
 
-      const rawPhone =
-        String(message.from || "")
+    if (incomingMessage) {
+
+      currentPhone =
+        String(incomingMessage.from || "")
           .replace(/\\D/g, "");
 
-      const phone =
-        escapeHtml(rawPhone);
+      currentName =
+        incomingMessage.name ||
+        "Cliente";
+    }
+    else {
+
+      const first =
+        messages[0];
+
+      currentPhone =
+        String(first.from || first.to || "")
+          .replace(/\\D/g, "");
+    }
+
+
+    document
+      .getElementById("contactInfo")
+      .innerHTML =
+        '<div class="contact-name">' +
+        escapeHtml(currentName) +
+        '</div>' +
+        '<div class="contact-phone">+' +
+        escapeHtml(currentPhone) +
+        '</div>';
+
+
+    chat.innerHTML = "";
+
+
+    messages.forEach(function(message) {
+
+      const outgoing =
+        message.direction === "outgoing";
+
+      const row =
+        document.createElement("div");
+
+      row.className =
+        "message-row " +
+        (outgoing ? "outgoing" : "incoming");
+
+
+      const bubble =
+        document.createElement("div");
+
+      bubble.className = "bubble";
+
+
+      const sender =
+        outgoing
+          ? "Sophy Candy"
+          : (message.name || currentName);
+
 
       const text =
+        message.text ||
+        "[Mensaje sin texto]";
+
+
+      bubble.innerHTML =
+        '<div class="sender">' +
+        escapeHtml(sender) +
+        '</div>' +
+
+        '<div class="message-text">' +
+        escapeHtml(text) +
+        '</div>' +
+
+        '<div class="message-time">' +
         escapeHtml(
-          message.text ||
-          "[Mensaje sin texto]"
-        );
+          formatDate(
+            message.receivedAt ||
+            message.timestamp
+          )
+        ) +
+        '</div>';
 
-      const type =
-        escapeHtml(
-          message.type || ""
-        );
 
-      const date =
-        formatDate(
-          message.receivedAt ||
-          message.timestamp
-        );
+      row.appendChild(bubble);
 
-      card.innerHTML = \`
-
-        <div class="message-header">
-
-          <div>
-
-            <div class="customer">
-              \${name}
-            </div>
-
-            <div class="phone">
-              +\${phone}
-            </div>
-
-          </div>
-
-          <div class="date">
-            \${escapeHtml(date)}
-          </div>
-
-        </div>
-
-        <div class="message-text">
-          \${text}
-        </div>
-
-        <div class="type">
-          Tipo de mensaje:
-          \${type}
-        </div>
-
-        <div class="reply-box">
-
-          <label>
-            Responder a \${name}
-          </label>
-
-          <textarea
-            class="reply-text"
-            maxlength="4096"
-            placeholder="Escribe aquí la respuesta para el cliente..."
-          ></textarea>
-
-          <div class="reply-actions">
-
-            <button
-              class="send-button"
-              onclick="sendReply(this, '\${phone}')"
-            >
-              Enviar WhatsApp
-            </button>
-
-            <span class="send-status"></span>
-
-          </div>
-
-        </div>
-
-      \`;
-
-      container.appendChild(card);
+      chat.appendChild(row);
 
     });
+
 
     document
       .getElementById("lastUpdate")
@@ -647,38 +567,177 @@ async function loadMessages() {
         new Date()
           .toLocaleTimeString("es-GT");
 
-  } catch (error) {
+
+    // Llevar la vista al último mensaje
+    chat.scrollTop =
+      chat.scrollHeight;
+
+  }
+  catch (error) {
 
     console.error(error);
 
-    container.innerHTML =
-      '<div class="empty">No se pudieron cargar los mensajes.</div>';
+    chat.innerHTML =
+      '<div class="empty">' +
+      'No se pudieron cargar los mensajes.' +
+      '</div>';
+  }
+}
+
+
+async function sendReply() {
+
+  const textarea =
+    document.getElementById("replyText");
+
+  const button =
+    document.getElementById("sendButton");
+
+  const status =
+    document.getElementById("sendStatus");
+
+  const text =
+    textarea.value.trim();
+
+
+  if (!currentPhone) {
+
+    status.textContent =
+      "No se encontró el número del cliente.";
+
+    status.className =
+      "send-status error";
+
+    return;
+  }
+
+
+  if (!text) {
+
+    status.textContent =
+      "Escribe un mensaje antes de enviarlo.";
+
+    status.className =
+      "send-status error";
+
+    return;
+  }
+
+
+  button.disabled = true;
+
+  button.textContent =
+    "Enviando...";
+
+  status.textContent = "";
+
+
+  try {
+
+    const response = await fetch(
+      "/.netlify/functions/whatsapp-send",
+      {
+        method: "POST",
+
+        credentials: "same-origin",
+
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+
+        body: JSON.stringify({
+          to: currentPhone,
+          text: text
+        })
+      }
+    );
+
+
+    const result =
+      await response.json();
+
+
+    if (
+      !response.ok ||
+      !result.success
+    ) {
+
+      throw new Error(
+        result.error ||
+        "No se pudo enviar el mensaje."
+      );
+    }
+
+
+    textarea.value = "";
+
+
+    status.textContent =
+      "✓ Mensaje enviado correctamente";
+
+    status.className =
+      "send-status success";
+
+
+    // Esperamos un momento para que
+    // el mensaje guardado aparezca.
+    setTimeout(
+      loadMessages,
+      1000
+    );
+
+  }
+  catch (error) {
+
+    console.error(error);
+
+    status.textContent =
+      "Error: " +
+      error.message;
+
+    status.className =
+      "send-status error";
+  }
+  finally {
+
+    button.disabled = false;
+
+    button.textContent =
+      "Enviar WhatsApp";
   }
 }
 
 
 loadMessages();
 
+
+// Actualizar automáticamente
+// cada 20 segundos
 setInterval(
   loadMessages,
-  30000
+  20000
 );
 
 </script>
 
 </body>
+
 </html>
 `;
 
-  return new Response(html, {
-    status: 200,
+  return new Response(
+    html,
+    {
+      status: 200,
 
-    headers: {
-      "Content-Type":
-        "text/html; charset=utf-8",
+      headers: {
+        "Content-Type":
+          "text/html; charset=utf-8",
 
-      "Cache-Control":
-        "no-store"
+        "Cache-Control":
+          "no-store"
+      }
     }
-  });
+  );
 };
