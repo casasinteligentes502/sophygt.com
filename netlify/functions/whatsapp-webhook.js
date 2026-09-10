@@ -1,131 +1,370 @@
-import { getStore } from "@netlify/blobs";
+const { getStore } = require("@netlify/blobs");
 
-export default async (request) => {
-  const VERIFY_TOKEN = process.env.WHATSAPP_VERIFY_TOKEN;
 
-  // =====================================================
-  // 1. VERIFICACIÓN DEL WEBHOOK DE META
-  // =====================================================
-  if (request.method === "GET") {
-    const url = new URL(request.url);
+// ======================================================
+// OBTENER TEXTO LEGIBLE DEL MENSAJE
+// ======================================================
 
-    const mode = url.searchParams.get("hub.mode");
-    const token = url.searchParams.get("hub.verify_token");
-    const challenge = url.searchParams.get("hub.challenge");
+function getMessageText(message) {
 
-    if (mode === "subscribe" && token === VERIFY_TOKEN) {
-      console.log("WEBHOOK VERIFICADO CORRECTAMENTE");
-
-      return new Response(challenge || "", {
-        status: 200,
-        headers: {
-          "Content-Type": "text/plain"
-        }
-      });
-    }
-
-    console.log("FALLO DE VERIFICACION DEL WEBHOOK");
-
-    return new Response("Verification failed", {
-      status: 403
-    });
+  if (!message) {
+    return "";
   }
 
-  // =====================================================
-  // 2. RECEPCIÓN DE EVENTOS DE WHATSAPP
-  // =====================================================
-  if (request.method === "POST") {
-    console.log("WEBHOOK POST RECIBIDO");
+  if (message.type === "text") {
+    return message.text?.body || "";
+  }
+
+  if (message.type === "button") {
+    return message.button?.text || "[Botón]";
+  }
+
+  if (message.type === "interactive") {
+
+    return (
+      message.interactive?.button_reply?.title ||
+      message.interactive?.list_reply?.title ||
+      "[Mensaje interactivo]"
+    );
+  }
+
+  if (message.type === "image") {
+    return message.image?.caption || "[Imagen]";
+  }
+
+  if (message.type === "video") {
+    return message.video?.caption || "[Video]";
+  }
+
+  if (message.type === "audio") {
+    return "[Audio]";
+  }
+
+  if (message.type === "document") {
+    return message.document?.filename || "[Documento]";
+  }
+
+  if (message.type === "location") {
+    return "[Ubicación]";
+  }
+
+  if (message.type === "contacts") {
+    return "[Contacto]";
+  }
+
+  if (message.type === "sticker") {
+    return "[Sticker]";
+  }
+
+  return "[Mensaje]";
+}
+
+
+
+// ======================================================
+// FUNCIÓN PRINCIPAL
+// ======================================================
+
+exports.handler = async function (event) {
+
+  const VERIFY_TOKEN =
+    process.env.WHATSAPP_VERIFY_TOKEN;
+
+
+  // ====================================================
+  // VERIFICACIÓN DEL WEBHOOK POR META
+  // ====================================================
+
+  if (event.httpMethod === "GET") {
+
+    const params =
+      event.queryStringParameters || {};
+
+    const mode =
+      params["hub.mode"];
+
+    const token =
+      params["hub.verify_token"];
+
+    const challenge =
+      params["hub.challenge"];
+
+
+    if (
+      mode === "subscribe" &&
+      token === VERIFY_TOKEN
+    ) {
+
+      console.log(
+        "WEBHOOK VERIFICADO CORRECTAMENTE"
+      );
+
+      return {
+        statusCode: 200,
+        body: challenge
+      };
+    }
+
+
+    console.log(
+      "FALLO DE VERIFICACION"
+    );
+
+    return {
+      statusCode: 403,
+      body: "Verification failed"
+    };
+  }
+
+
+
+  // ====================================================
+  // RECEPCIÓN DE MENSAJES DE WHATSAPP
+  // ====================================================
+
+  if (event.httpMethod === "POST") {
+
+    console.log(
+      "WEBHOOK POST RECIBIDO"
+    );
+
 
     try {
-      const data = await request.json();
+
+      const data =
+        JSON.parse(
+          event.body || "{}"
+        );
+
 
       console.log(
         "PAYLOAD RECIBIDO:",
         JSON.stringify(data)
       );
 
-      // Netlify Blobs
-      const store = getStore("whatsapp-messages");
 
-      // =================================================
-      // SOPORTA:
-      // - Webhooks reales de WhatsApp
-      // - Prueba manual desde Meta Developers
-      // =================================================
+      // Soporta mensajes reales de WhatsApp
+      // y también pruebas manuales de Meta.
+
       const value =
-        data?.entry?.[0]?.changes?.[0]?.value ||
-        data?.value ||
+        data.entry?.[0]
+          ?.changes?.[0]
+          ?.value
+        ||
+        data.value
+        ||
         {};
 
-      const messages = value?.messages || [];
-      const contacts = value?.contacts || [];
 
-      // =================================================
-      // SI EL EVENTO NO CONTIENE MENSAJES
-      // =================================================
+      const messages =
+        Array.isArray(value.messages)
+          ? value.messages
+          : [];
+
+
+      const contacts =
+        Array.isArray(value.contacts)
+          ? value.contacts
+          : [];
+
+
+      const metadata =
+        value.metadata || {};
+
+
+
+      // ==================================================
+      // EVENTOS QUE NO CONTIENEN MENSAJES
+      // ==================================================
+
       if (messages.length === 0) {
-        console.log("POST RECIBIDO, PERO SIN MENSAJES");
 
-        return new Response("EVENT_RECEIVED", {
-          status: 200
-        });
+        console.log(
+          "POST RECIBIDO, PERO SIN MENSAJES"
+        );
+
+        return {
+          statusCode: 200,
+          body: "EVENT_RECEIVED"
+        };
       }
 
-      // =================================================
+
+
+      // ==================================================
+      // NETLIFY BLOBS
+      // ==================================================
+
+      const store =
+        getStore(
+          "whatsapp-messages"
+        );
+
+
+
+      // ==================================================
       // GUARDAR TODOS LOS MENSAJES RECIBIDOS
-      // =================================================
-      for (const message of messages) {
-        const contactName =
-          contacts?.[0]?.profile?.name ||
-          message?.from ||
-          "desconocido";
+      // ==================================================
 
-        let messageText = "";
+      for (
+        const message
+        of messages
+      ) {
 
-        if (message?.type === "text") {
-          messageText = message?.text?.body || "";
-        }
+        const messageFrom =
+          String(
+            message.from || ""
+          );
+
+
+        // Buscar el contacto correspondiente
+        // al número que envió el mensaje.
+
+        const contact =
+          contacts.find(
+            function (item) {
+
+              return (
+                String(item.wa_id || "") ===
+                messageFrom
+              );
+
+            }
+          )
+          ||
+          contacts[0]
+          ||
+          {};
+
+
+        const customerName =
+          contact?.profile?.name
+          ||
+          messageFrom
+          ||
+          "Cliente";
+
+
+        const messageId =
+          message.id
+          ||
+          `msg-${Date.now()}`;
+
 
         const record = {
-          id: message?.id || `msg-${Date.now()}`,
-          from: message?.from || "desconocido",
-          name: contactName,
-          type: message?.type || "unknown",
-          text: messageText,
-          timestamp: message?.timestamp || "",
-          receivedAt: new Date().toISOString(),
+
+          id:
+            messageId,
+
+          from:
+            messageFrom,
+
+          name:
+            customerName,
+
+          type:
+            message.type || "unknown",
+
+          text:
+            getMessageText(message),
+
+          timestamp:
+            message.timestamp || "",
+
+          receivedAt:
+            new Date().toISOString(),
+
+
+          // ==============================================
+          // MUY IMPORTANTE PARA LA BANDEJA
+          // ==============================================
+
+          direction:
+            "incoming",
+
+          source:
+            "whatsapp-webhook",
+
+          status:
+            "received",
+
+
+          // ==============================================
+          // DATOS DEL NÚMERO DE SOPHY CANDY
+          // ==============================================
+
           phoneNumberId:
-            value?.metadata?.phone_number_id || "",
+            metadata.phone_number_id || "",
+
           displayPhoneNumber:
-            value?.metadata?.display_phone_number || "",
-          raw: message
+            metadata.display_phone_number || "",
+
+
+          // Datos originales para diagnóstico
+          raw:
+            message
+
         };
 
-        const key = `message-${record.id}`;
 
-        await store.setJSON(key, record);
+        const key =
+          `message-${messageId}`;
 
-        console.log("MENSAJE GUARDADO:", key);
+
+        await store.setJSON(
+          key,
+          record
+        );
+
+
+        console.log(
+          "MENSAJE GUARDADO:",
+          key
+        );
+
       }
 
-      return new Response("EVENT_RECEIVED", {
-        status: 200
-      });
-    } catch (error) {
-      console.error("WEBHOOK ERROR:", error);
 
-      // WhatsApp necesita respuesta 200 para evitar reintentos
-      return new Response("EVENT_RECEIVED", {
-        status: 200
-      });
+
+      // ==================================================
+      // CONFIRMACIÓN A META
+      // ==================================================
+
+      return {
+        statusCode: 200,
+        body: "EVENT_RECEIVED"
+      };
+
     }
+    catch (error) {
+
+      console.error(
+        "WEBHOOK ERROR:",
+        error
+      );
+
+
+      // Devolvemos error para que Meta pueda
+      // reintentar si hubo un fallo temporal.
+
+      return {
+        statusCode: 500,
+        body: "WEBHOOK_ERROR"
+      };
+
+    }
+
   }
 
-  // =====================================================
-  // 3. OTROS MÉTODOS HTTP
-  // =====================================================
-  return new Response("Method Not Allowed", {
-    status: 405
-  });
+
+
+  // ====================================================
+  // OTROS MÉTODOS NO PERMITIDOS
+  // ====================================================
+
+  return {
+    statusCode: 405,
+    body: "Method Not Allowed"
+  };
+
 };
