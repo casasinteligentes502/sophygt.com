@@ -47,7 +47,6 @@ export default async (request) => {
 
   const html = `
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
@@ -156,6 +155,10 @@ body {
   border: 1px solid #ddd;
   border-radius: 8px;
   outline: none;
+}
+
+.search input:focus {
+  border-color: #128c7e;
 }
 
 .conversations {
@@ -303,7 +306,7 @@ body {
 }
 
 
-/* IMÁGENES DEL CHAT */
+/* IMÁGENES */
 
 .chat-image {
   display: block;
@@ -318,6 +321,38 @@ body {
 }
 
 .image-caption {
+  margin-top: 5px;
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+
+/* AUDIO */
+
+.chat-audio {
+  display: block;
+  width: 320px;
+  max-width: 100%;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+
+/* VIDEO */
+
+.chat-video {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  max-height: 420px;
+  border-radius: 8px;
+  background: #000;
+  margin-bottom: 7px;
+}
+
+.video-caption {
   margin-top: 5px;
   font-size: 14px;
   line-height: 1.4;
@@ -352,7 +387,7 @@ body {
 }
 
 
-/* ÁREA DE RESPUESTA */
+/* RESPUESTA */
 
 .reply-area {
   padding: 12px;
@@ -374,9 +409,6 @@ body {
   outline: none;
 }
 
-
-/* BOTÓN IMAGEN */
-
 .attach-button {
   border: 0;
   background: #54656f;
@@ -391,9 +423,6 @@ body {
 .attach-button:hover {
   background: #3e4b52;
 }
-
-
-/* BOTÓN ENVIAR */
 
 .send-button {
   border: 0;
@@ -438,7 +467,6 @@ body {
   color: #667781;
 }
 
-
 footer {
   text-align: center;
   font-size: 11px;
@@ -475,6 +503,12 @@ footer {
     max-width: 90%;
   }
 
+  .chat-image,
+  .chat-video,
+  .chat-audio {
+    max-width: 100%;
+  }
+
   .reply-area {
     flex-wrap: wrap;
   }
@@ -501,22 +535,12 @@ footer {
 <div class="topbar">
 
   <div>
-
-    <h1>
-      Surtimayoreo Sophy Candy
-    </h1>
-
-    <small>
-      Bandeja de WhatsApp Business API
-    </small>
-
+    <h1>Surtimayoreo Sophy Candy</h1>
+    <small>Bandeja de WhatsApp Business API</small>
   </div>
 
-
   <div class="business-number">
-
     WhatsApp +502 3993 5344
-
   </div>
 
 </div>
@@ -526,7 +550,6 @@ footer {
 
 
 <aside class="sidebar">
-
 
   <div class="sidebar-header">
 
@@ -567,7 +590,6 @@ footer {
     </div>
 
   </div>
-
 
 </aside>
 
@@ -637,7 +659,6 @@ footer {
 
   <div class="reply-area">
 
-
     <input
       id="imageInput"
       type="file"
@@ -670,7 +691,6 @@ footer {
     >
       Enviar WhatsApp
     </button>
-
 
   </div>
 
@@ -719,6 +739,7 @@ let selectedImageFile = null;
 
 const SOPHY_PHONE_NUMBER_ID =
   "1273794675819369";
+
 
 
 function escapeHtml(value) {
@@ -1064,16 +1085,27 @@ function renderConversationList() {
         "[Mensaje]";
 
 
-      if (
-        last.type ===
-        "image"
-      ) {
+      if (last.type === "image") {
 
-        preview =
-          "📷 Imagen";
+        preview = "📷 Imagen";
 
         if (last.caption) {
+          preview +=
+            " - " +
+            last.caption;
+        }
 
+      } else if (last.type === "audio") {
+
+        preview =
+          "🎤 Nota de voz";
+
+      } else if (last.type === "video") {
+
+        preview =
+          "🎬 Video";
+
+        if (last.caption) {
           preview +=
             " - " +
             last.caption;
@@ -1247,12 +1279,14 @@ function renderChat() {
       let content = "";
 
 
+      /* IMAGEN */
+
       if (
         message.type === "image" &&
         message.mediaId
       ) {
 
-        const imageUrl =
+        const mediaUrl =
           "/.netlify/functions/whatsapp-media?id="
           +
           encodeURIComponent(
@@ -1262,11 +1296,11 @@ function renderChat() {
 
         content +=
           '<a href="' +
-          imageUrl +
+          mediaUrl +
           '" target="_blank" rel="noopener noreferrer">' +
 
           '<img class="chat-image" src="' +
-          imageUrl +
+          mediaUrl +
           '" alt="Imagen de WhatsApp">' +
 
           '</a>';
@@ -1284,6 +1318,91 @@ function renderChat() {
             ) +
             '</div>';
         }
+
+
+      /* AUDIO */
+
+      } else if (
+        message.type === "audio" &&
+        message.mediaId
+      ) {
+
+        const mediaUrl =
+          "/.netlify/functions/whatsapp-media?id="
+          +
+          encodeURIComponent(
+            message.mediaId
+          );
+
+
+        content +=
+          '<div class="message-text">' +
+          '🎤 Nota de voz' +
+          '</div>' +
+
+          '<audio class="chat-audio" controls preload="metadata">' +
+
+          '<source src="' +
+          mediaUrl +
+          '" type="' +
+          escapeHtml(
+            message.mimeType ||
+            "audio/ogg"
+          ) +
+          '">' +
+
+          'Tu navegador no puede reproducir este audio.' +
+
+          '</audio>';
+
+
+      /* VIDEO */
+
+      } else if (
+        message.type === "video" &&
+        message.mediaId
+      ) {
+
+        const mediaUrl =
+          "/.netlify/functions/whatsapp-media?id="
+          +
+          encodeURIComponent(
+            message.mediaId
+          );
+
+
+        content +=
+          '<video class="chat-video" controls preload="metadata">' +
+
+          '<source src="' +
+          mediaUrl +
+          '" type="' +
+          escapeHtml(
+            message.mimeType ||
+            "video/mp4"
+          ) +
+          '">' +
+
+          'Tu navegador no puede reproducir este video.' +
+
+          '</video>';
+
+
+        if (
+          message.caption &&
+          String(message.caption).trim()
+        ) {
+
+          content +=
+            '<div class="video-caption">' +
+            escapeHtml(
+              message.caption
+            ) +
+            '</div>';
+        }
+
+
+      /* TEXTO */
 
       } else {
 
@@ -1752,7 +1871,6 @@ async function sendImage() {
     !selectedPhone ||
     !selectedImageFile
   ) {
-
     return;
   }
 
@@ -1882,11 +2000,11 @@ setInterval(
   20000
 );
 
+
 </script>
 
 
 </body>
-
 </html>
 `;
 
