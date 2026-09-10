@@ -1,3 +1,5 @@
+import { getStore } from "@netlify/blobs";
+
 function isAuthorized(request) {
   const auth = request.headers.get("authorization") || "";
 
@@ -28,7 +30,9 @@ function isAuthorized(request) {
 
 export default async (request) => {
 
-  // Protección de acceso
+  // ==========================================
+  // PROTECCIÓN DE ACCESO
+  // ==========================================
   if (!isAuthorized(request)) {
     return new Response("Acceso no autorizado", {
       status: 401,
@@ -87,19 +91,25 @@ export default async (request) => {
       );
     }
 
+    // ==========================================
+    // ENVIAR MENSAJE POR WHATSAPP CLOUD API
+    // ==========================================
     const response = await fetch(
       `https://graph.facebook.com/v26.0/${PHONE_NUMBER_ID}/messages`,
       {
         method: "POST",
+
         headers: {
           "Authorization": `Bearer ${ACCESS_TOKEN}`,
           "Content-Type": "application/json"
         },
+
         body: JSON.stringify({
           messaging_product: "whatsapp",
           recipient_type: "individual",
           to: to,
           type: "text",
+
           text: {
             preview_url: false,
             body: text
@@ -123,29 +133,109 @@ export default async (request) => {
             result?.error?.message ||
             "No se pudo enviar el mensaje."
         },
-        { status: response.status }
+        {
+          status: response.status
+        }
       );
     }
+
+    const messageId =
+      result?.messages?.[0]?.id ||
+      `sent-${Date.now()}`;
 
     console.log(
       "MENSAJE WHATSAPP ENVIADO A:",
       to
     );
 
+    // ==========================================
+    // GUARDAR RESPUESTA EN NETLIFY BLOBS
+    // ==========================================
+    let stored = false;
+
+    try {
+      const store =
+        getStore("whatsapp-messages");
+
+      const sentRecord = {
+        id: messageId,
+
+        // Se mantiene el teléfono del cliente
+        // para poder agrupar la conversación.
+        from: to,
+        to: to,
+
+        name: "Sophy Candy",
+
+        type: "text",
+        text: text,
+
+        direction: "outgoing",
+        status: "sent",
+
+        timestamp:
+          Math.floor(Date.now() / 1000).toString(),
+
+        receivedAt:
+          new Date().toISOString(),
+
+        phoneNumberId:
+          PHONE_NUMBER_ID,
+
+        displayPhoneNumber:
+          "50239935344",
+
+        raw: result
+      };
+
+      const key =
+        `message-sent-${messageId}`;
+
+      await store.setJSON(
+        key,
+        sentRecord
+      );
+
+      stored = true;
+
+      console.log(
+        "RESPUESTA GUARDADA:",
+        key
+      );
+
+    } catch (storageError) {
+
+      // El mensaje ya fue enviado.
+      // No provocamos un segundo envío
+      // únicamente porque falle el historial.
+      console.error(
+        "ERROR GUARDANDO RESPUESTA:",
+        storageError
+      );
+    }
+
     return Response.json({
       success: true,
-      messageId: result?.messages?.[0]?.id || ""
+      messageId: messageId,
+      stored: stored
     });
 
   } catch (error) {
-    console.error("ERROR WHATSAPP SEND:", error);
+
+    console.error(
+      "ERROR WHATSAPP SEND:",
+      error
+    );
 
     return Response.json(
       {
         success: false,
-        error: "Error interno al enviar el mensaje."
+        error:
+          "Error interno al enviar el mensaje."
       },
-      { status: 500 }
+      {
+        status: 500
+      }
     );
   }
 };
