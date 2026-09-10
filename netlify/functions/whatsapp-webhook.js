@@ -1,45 +1,58 @@
 import { getStore } from "@netlify/blobs";
 
+
 function getMessageText(message) {
+
   if (!message) return "";
+
 
   if (message.type === "text") {
     return message.text?.body || "";
   }
 
+
   if (message.type === "image") {
     return message.image?.caption || "[Imagen]";
   }
+
 
   if (message.type === "video") {
     return message.video?.caption || "[Video]";
   }
 
+
   if (message.type === "audio") {
     return "[Audio]";
   }
+
 
   if (message.type === "document") {
     return message.document?.filename || "[Documento]";
   }
 
+
   if (message.type === "sticker") {
     return "[Sticker]";
   }
+
 
   if (message.type === "location") {
     return "[Ubicación]";
   }
 
+
   if (message.type === "contacts") {
     return "[Contacto]";
   }
+
 
   if (message.type === "button") {
     return message.button?.text || "[Botón]";
   }
 
+
   if (message.type === "interactive") {
+
     return (
       message.interactive?.button_reply?.title ||
       message.interactive?.list_reply?.title ||
@@ -47,8 +60,81 @@ function getMessageText(message) {
     );
   }
 
+
   return "[Mensaje]";
 }
+
+
+
+function getMediaData(message) {
+
+  if (!message) {
+
+    return {
+      mediaId: "",
+      mimeType: "",
+      caption: ""
+    };
+  }
+
+
+  if (message.type === "image") {
+
+    return {
+      mediaId: message.image?.id || "",
+      mimeType: message.image?.mime_type || "",
+      caption: message.image?.caption || ""
+    };
+  }
+
+
+  if (message.type === "video") {
+
+    return {
+      mediaId: message.video?.id || "",
+      mimeType: message.video?.mime_type || "",
+      caption: message.video?.caption || ""
+    };
+  }
+
+
+  if (message.type === "audio") {
+
+    return {
+      mediaId: message.audio?.id || "",
+      mimeType: message.audio?.mime_type || "",
+      caption: ""
+    };
+  }
+
+
+  if (message.type === "document") {
+
+    return {
+      mediaId: message.document?.id || "",
+      mimeType: message.document?.mime_type || "",
+      caption: message.document?.caption || ""
+    };
+  }
+
+
+  if (message.type === "sticker") {
+
+    return {
+      mediaId: message.sticker?.id || "",
+      mimeType: message.sticker?.mime_type || "",
+      caption: ""
+    };
+  }
+
+
+  return {
+    mediaId: "",
+    mimeType: "",
+    caption: ""
+  };
+}
+
 
 
 export default async (request) => {
@@ -66,11 +152,14 @@ export default async (request) => {
     const url =
       new URL(request.url);
 
+
     const mode =
       url.searchParams.get("hub.mode");
 
+
     const token =
       url.searchParams.get("hub.verify_token");
+
 
     const challenge =
       url.searchParams.get("hub.challenge");
@@ -95,6 +184,7 @@ export default async (request) => {
   }
 
 
+
   // ==========================================
   // RECIBIR MENSAJES
   // ==========================================
@@ -113,12 +203,17 @@ export default async (request) => {
 
 
       const value =
+
         data?.entry?.[0]
           ?.changes?.[0]
           ?.value
+
         ||
+
         data?.value
+
         ||
+
         {};
 
 
@@ -155,6 +250,7 @@ export default async (request) => {
 
       for (const message of messages) {
 
+
         const messageFrom =
           String(
             message.from || ""
@@ -162,48 +258,49 @@ export default async (request) => {
 
 
         const contact =
+
           contacts.find(
             item =>
-              String(item.wa_id || "") ===
-              messageFrom
+              String(
+                item.wa_id || ""
+              ) === messageFrom
           )
+
           ||
+
           contacts[0]
+
           ||
+
           {};
 
 
         const customerName =
-          contact?.profile?.name ||
-          messageFrom ||
+
+          contact?.profile?.name
+
+          ||
+
+          messageFrom
+
+          ||
+
           "Cliente";
 
 
         const messageId =
-          message.id ||
+
+          message.id
+
+          ||
+
           `msg-${Date.now()}`;
 
 
-        // ======================================
-        // DATOS DE IMAGEN
-        // ======================================
-
-        const mediaId =
-          message.type === "image"
-            ? message.image?.id || ""
-            : "";
-
-
-        const mimeType =
-          message.type === "image"
-            ? message.image?.mime_type || ""
-            : "";
-
-
-        const caption =
-          message.type === "image"
-            ? message.image?.caption || ""
-            : "";
+        const media =
+          getMediaData(
+            message
+          );
 
 
         const record = {
@@ -245,22 +342,19 @@ export default async (request) => {
             metadata.display_phone_number || "",
 
 
-          // ==================================
-          // INFORMACIÓN MULTIMEDIA
-          // ==================================
+          // MULTIMEDIA
 
           mediaId:
-            mediaId,
+            media.mediaId,
 
           mimeType:
-            mimeType,
+            media.mimeType,
 
           caption:
-            caption,
+            media.caption,
 
           raw:
             message
-
         };
 
 
@@ -288,7 +382,7 @@ export default async (request) => {
       );
 
     }
-    catch (error) {
+    catch(error) {
 
       console.error(
         "WEBHOOK ERROR:",
