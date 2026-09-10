@@ -28,6 +28,7 @@ function isAuthorized(request) {
   }
 }
 
+
 export default async (request) => {
 
   if (!isAuthorized(request)) {
@@ -44,6 +45,7 @@ export default async (request) => {
     );
   }
 
+
   const html = `
 <!DOCTYPE html>
 <html lang="es">
@@ -57,7 +59,15 @@ export default async (request) => {
   content="width=device-width, initial-scale=1.0"
 >
 
-<title>Sophy Candy - WhatsApp</title>
+<meta
+  name="robots"
+  content="noindex,nofollow,noarchive"
+>
+
+<title>
+Sophy Candy - Bandeja WhatsApp
+</title>
+
 
 <style>
 
@@ -65,197 +75,300 @@ export default async (request) => {
   box-sizing: border-box;
 }
 
+
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
   background: #e9edef;
+
   color: #111b21;
 }
 
+
+/* ==========================================
+   BARRA SUPERIOR
+========================================== */
+
 .topbar {
+
   background: #075e54;
+
   color: white;
+
   min-height: 72px;
+
   padding: 14px 24px;
 
   display: flex;
+
   justify-content: space-between;
+
   align-items: center;
 }
 
+
 .topbar h1 {
+
   margin: 0;
+
   font-size: 21px;
 }
 
+
 .topbar small {
+
   opacity: .9;
 }
 
+
 .business-number {
+
   font-weight: bold;
 }
 
+
+/* ==========================================
+   CONTENEDOR PRINCIPAL
+========================================== */
+
 .app {
+
   width: calc(100% - 30px);
+
   max-width: 1300px;
 
   height: calc(100vh - 125px);
+
   min-height: 600px;
 
   margin: 18px auto 0;
 
   display: grid;
-  grid-template-columns: 340px 1fr;
+
+  grid-template-columns:
+    340px 1fr;
 
   background: white;
 
   border-radius: 10px;
+
   overflow: hidden;
 
   box-shadow:
-    0 3px 14px rgba(0,0,0,.13);
+    0 3px 14px
+    rgba(0,0,0,.13);
 }
 
 
-/* ================================
-   COLUMNA DE CLIENTES
-================================ */
+/* ==========================================
+   COLUMNA IZQUIERDA
+========================================== */
 
 .sidebar {
-  border-right: 1px solid #d9d9d9;
+
+  border-right:
+    1px solid #d9d9d9;
+
   background: white;
 
   display: flex;
+
   flex-direction: column;
 
   min-width: 0;
 }
 
+
 .sidebar-header {
+
   padding: 14px 16px;
+
   background: #f0f2f5;
-  border-bottom: 1px solid #ddd;
+
+  border-bottom:
+    1px solid #ddd;
 }
 
+
 .online {
+
   color: #128c7e;
+
   font-weight: bold;
 }
 
+
 .search {
+
   padding: 10px;
+
   background: white;
-  border-bottom: 1px solid #eee;
+
+  border-bottom:
+    1px solid #eee;
 }
 
+
 .search input {
+
   width: 100%;
+
   padding: 10px 12px;
 
-  border: 1px solid #ddd;
+  border:
+    1px solid #ddd;
+
   border-radius: 8px;
 
   outline: none;
 }
 
+
 .search input:focus {
-  border-color: #128c7e;
+
+  border-color:
+    #128c7e;
 }
 
+
 .conversations {
+
   flex: 1;
+
   overflow-y: auto;
 }
 
+
 .conversation {
-  position: relative;
 
   padding: 13px 15px;
 
-  border-bottom: 1px solid #eee;
+  border-bottom:
+    1px solid #eee;
 
   cursor: pointer;
 }
 
+
 .conversation:hover {
+
   background: #f5f6f6;
 }
 
+
 .conversation.active {
+
   background: #e9edef;
 }
 
+
 .conversation-name {
+
   font-weight: bold;
+
   font-size: 14px;
 }
 
+
 .conversation-phone {
+
   color: #667781;
+
   font-size: 12px;
+
   margin-top: 3px;
 }
 
+
 .conversation-preview {
+
   color: #667781;
+
   font-size: 12px;
 
   margin-top: 6px;
 
   white-space: nowrap;
+
   overflow: hidden;
+
   text-overflow: ellipsis;
 }
 
+
 .conversation-time {
+
   color: #888;
+
   font-size: 10px;
 
   margin-top: 5px;
 }
 
 
-/* ================================
-   PANEL DE CHAT
-================================ */
+/* ==========================================
+   PANEL DERECHO
+========================================== */
 
 .chat-panel {
+
   display: flex;
+
   flex-direction: column;
 
   min-width: 0;
 }
 
+
 .chat-header {
+
   min-height: 68px;
 
   padding: 12px 18px;
 
   background: #f0f2f5;
 
-  border-bottom: 1px solid #ddd;
+  border-bottom:
+    1px solid #ddd;
 
   display: flex;
-  justify-content: space-between;
+
+  justify-content:
+    space-between;
+
   align-items: center;
 }
 
+
 .chat-name {
+
   font-weight: bold;
+
   font-size: 16px;
 }
 
+
 .chat-phone {
+
   color: #667781;
+
   font-size: 12px;
+
   margin-top: 3px;
 }
 
+
 .refresh-button {
+
   border: 0;
 
   background: #128c7e;
+
   color: white;
 
   border-radius: 7px;
@@ -263,14 +376,23 @@ body {
   padding: 9px 14px;
 
   font-weight: bold;
+
   cursor: pointer;
 }
 
+
 .refresh-button:hover {
+
   background: #0d766a;
 }
 
+
+/* ==========================================
+   ÁREA DEL CHAT
+========================================== */
+
 .chat {
+
   flex: 1;
 
   background: #efeae2;
@@ -281,24 +403,28 @@ body {
 }
 
 
-/* ================================
-   BURBUJAS
-================================ */
-
 .message-row {
+
   display: flex;
+
   margin-bottom: 10px;
 }
 
+
 .incoming {
+
   justify-content: flex-start;
 }
 
+
 .outgoing {
+
   justify-content: flex-end;
 }
 
+
 .bubble {
+
   max-width: 72%;
 
   padding: 9px 11px 6px;
@@ -306,21 +432,33 @@ body {
   border-radius: 9px;
 
   box-shadow:
-    0 1px 2px rgba(0,0,0,.12);
+    0 1px 2px
+    rgba(0,0,0,.12);
 }
+
 
 .incoming .bubble {
+
   background: white;
-  border-top-left-radius: 2px;
+
+  border-top-left-radius:
+    2px;
 }
+
 
 .outgoing .bubble {
+
   background: #d9fdd3;
-  border-top-right-radius: 2px;
+
+  border-top-right-radius:
+    2px;
 }
 
+
 .sender {
+
   font-size: 11px;
+
   color: #087f5b;
 
   font-weight: bold;
@@ -328,16 +466,23 @@ body {
   margin-bottom: 4px;
 }
 
+
 .message-text {
+
   font-size: 14px;
+
   line-height: 1.4;
 
   white-space: pre-wrap;
+
   word-break: break-word;
 }
 
+
 .message-time {
+
   font-size: 10px;
+
   color: #667781;
 
   text-align: right;
@@ -346,28 +491,95 @@ body {
 }
 
 
-/* ================================
-   ÁREA PARA RESPONDER
-================================ */
+/* ==========================================
+   IMÁGENES DE WHATSAPP
+========================================== */
+
+.chat-image {
+
+  display: block;
+
+  width: 100%;
+
+  max-width: 320px;
+
+  max-height: 420px;
+
+  object-fit: contain;
+
+  border-radius: 8px;
+
+  margin-bottom: 7px;
+
+  cursor: pointer;
+
+  background: #f5f5f5;
+}
+
+
+.chat-image:hover {
+
+  opacity: .96;
+}
+
+
+.image-caption {
+
+  margin-top: 5px;
+
+  font-size: 14px;
+
+  line-height: 1.4;
+
+  white-space: pre-wrap;
+
+  word-break: break-word;
+}
+
+
+.media-placeholder {
+
+  padding: 18px;
+
+  border-radius: 8px;
+
+  background: #f4f4f4;
+
+  color: #667781;
+
+  font-size: 13px;
+}
+
+
+/* ==========================================
+   RESPONDER
+========================================== */
 
 .reply-area {
+
   padding: 12px;
 
   background: #f0f2f5;
 
   display: flex;
+
   gap: 9px;
 }
 
+
 .reply-area textarea {
+
   flex: 1;
 
   min-height: 50px;
+
   max-height: 110px;
 
   padding: 11px 12px;
 
-  border: 1px solid #ccc;
+  border:
+    1px solid #ccc;
+
   border-radius: 9px;
 
   resize: vertical;
@@ -382,14 +594,19 @@ body {
   outline: none;
 }
 
+
 .reply-area textarea:focus {
+
   border-color: #128c7e;
 }
 
+
 .send-button {
+
   border: 0;
 
   background: #25d366;
+
   color: white;
 
   border-radius: 8px;
@@ -401,16 +618,23 @@ body {
   cursor: pointer;
 }
 
+
 .send-button:hover {
+
   background: #1ebe5d;
 }
 
+
 .send-button:disabled {
+
   opacity: .6;
+
   cursor: wait;
 }
 
+
 .send-status {
+
   background: #f0f2f5;
 
   padding: 0 13px 8px;
@@ -420,17 +644,25 @@ body {
   font-size: 12px;
 }
 
+
 .success {
+
   color: #087f5b;
+
   font-weight: bold;
 }
+
 
 .error {
+
   color: #c92a2a;
+
   font-weight: bold;
 }
 
+
 .empty {
+
   padding: 40px 20px;
 
   text-align: center;
@@ -438,7 +670,9 @@ body {
   color: #667781;
 }
 
+
 footer {
+
   text-align: center;
 
   font-size: 11px;
@@ -449,29 +683,39 @@ footer {
 }
 
 
-/* ================================
+/* ==========================================
    CELULAR
-================================ */
+========================================== */
 
 @media(max-width:800px) {
 
   .topbar {
+
     padding: 11px;
   }
 
+
   .topbar h1 {
+
     font-size: 17px;
   }
 
+
   .business-number {
+
     font-size: 13px;
   }
 
+
   .app {
+
     width: 100%;
+
     margin: 0;
 
-    height: calc(100vh - 82px);
+    height:
+      calc(100vh - 82px);
+
     min-height: 600px;
 
     border-radius: 0;
@@ -480,23 +724,39 @@ footer {
       150px 1fr;
   }
 
+
   .conversation {
+
     padding: 10px 8px;
   }
 
+
   .conversation-preview {
+
     display: none;
   }
 
+
   .bubble {
-    max-width: 88%;
+
+    max-width: 90%;
   }
 
+
+  .chat-image {
+
+    max-width: 100%;
+  }
+
+
   .reply-area {
+
     flex-direction: column;
   }
 
+
   .send-button {
+
     min-height: 42px;
   }
 }
@@ -505,10 +765,12 @@ footer {
 
 </head>
 
+
 <body>
 
 
 <div class="topbar">
+
 
   <div>
 
@@ -529,15 +791,16 @@ footer {
 
   </div>
 
+
 </div>
 
 
 <div class="app">
 
 
-  <!-- =============================
+  <!-- =======================================
        LISTA DE CLIENTES
-  ============================== -->
+  ======================================== -->
 
   <aside class="sidebar">
 
@@ -547,13 +810,17 @@ footer {
       Estado:
 
       <span class="online">
+
         ● Conectado
+
       </span>
 
       <br>
 
       <small id="lastUpdate">
+
         Cargando...
+
       </small>
 
     </div>
@@ -562,22 +829,33 @@ footer {
     <div class="search">
 
       <input
+
         id="searchInput"
+
         type="text"
+
         placeholder="Buscar cliente..."
-        oninput="renderConversationList()"
+
+        oninput=
+          "renderConversationList()"
+
       >
 
     </div>
 
 
     <div
+
       id="conversations"
+
       class="conversations"
+
     >
 
       <div class="empty">
+
         Cargando clientes...
+
       </div>
 
     </div>
@@ -586,9 +864,10 @@ footer {
   </aside>
 
 
-  <!-- =============================
-       CONVERSACIÓN
-  ============================== -->
+
+  <!-- =======================================
+       PANEL DE CONVERSACIÓN
+  ======================================== -->
 
   <section class="chat-panel">
 
@@ -598,9 +877,13 @@ footer {
 
       <div>
 
+
         <div
+
           id="chatName"
+
           class="chat-name"
+
         >
 
           Selecciona un cliente
@@ -609,16 +892,23 @@ footer {
 
 
         <div
+
           id="chatPhone"
+
           class="chat-phone"
+
         ></div>
+
 
       </div>
 
 
       <button
+
         class="refresh-button"
+
         onclick="loadMessages()"
+
       >
 
         Actualizar
@@ -629,9 +919,13 @@ footer {
     </div>
 
 
+
     <div
+
       id="chat"
+
       class="chat"
+
     >
 
       <div class="empty">
@@ -643,20 +937,30 @@ footer {
     </div>
 
 
+
     <div class="reply-area">
 
 
       <textarea
+
         id="replyText"
+
         maxlength="4096"
-        placeholder="Escribe una respuesta para el cliente..."
+
+        placeholder=
+          "Escribe una respuesta para el cliente..."
+
       ></textarea>
 
 
       <button
+
         id="sendButton"
+
         class="send-button"
+
         onclick="sendReply()"
+
       >
 
         Enviar WhatsApp
@@ -668,8 +972,11 @@ footer {
 
 
     <div
+
       id="sendStatus"
+
       class="send-status"
+
     ></div>
 
 
@@ -696,7 +1003,9 @@ footer {
 </footer>
 
 
+
 <script>
+
 
 let allMessages = [];
 
@@ -705,11 +1014,16 @@ let conversations = {};
 let selectedPhone = "";
 
 
-// ID REAL DEL NÚMERO DE SOPHY CANDY
+// ID DEL NÚMERO OFICIAL DE SOPHY CANDY
+
 const SOPHY_PHONE_NUMBER_ID =
   "1273794675819369";
 
 
+
+/* ==========================================
+   SEGURIDAD DE TEXTO
+========================================== */
 
 function escapeHtml(value) {
 
@@ -721,6 +1035,7 @@ function escapeHtml(value) {
     return "";
 
   }
+
 
   return String(value)
 
@@ -753,6 +1068,10 @@ function escapeHtml(value) {
 
 
 
+/* ==========================================
+   FECHAS
+========================================== */
+
 function messageDate(message) {
 
   if (message.receivedAt) {
@@ -761,6 +1080,7 @@ function messageDate(message) {
       new Date(
         message.receivedAt
       );
+
 
     if (
       !Number.isNaN(
@@ -811,8 +1131,8 @@ function formatDate(message) {
   if (
     Number.isNaN(
       date.getTime()
-    ) ||
-
+    )
+    ||
     date.getTime() === 0
   ) {
 
@@ -822,16 +1142,28 @@ function formatDate(message) {
 
 
   return date.toLocaleString(
+
     "es-GT",
+
     {
-      dateStyle: "short",
-      timeStyle: "short"
+
+      dateStyle:
+        "short",
+
+      timeStyle:
+        "short"
+
     }
+
   );
 
 }
 
 
+
+/* ==========================================
+   TELÉFONO DEL CLIENTE
+========================================== */
 
 function getMessagePhone(message) {
 
@@ -868,11 +1200,12 @@ function getMessagePhone(message) {
 
 
 
-function isRealSophyMessage(
-  message
-) {
+/* ==========================================
+   OCULTAR PRUEBAS INTERNAS DE META
+========================================== */
 
-  // Mensajes enviados desde nuestra bandeja
+function isRealSophyMessage(message) {
+
   if (
     message.direction ===
     "outgoing"
@@ -883,12 +1216,12 @@ function isRealSophyMessage(
   }
 
 
-  // Mensajes reales entrantes
   if (
     String(
       message.phoneNumberId ||
       ""
-    ) ===
+    )
+    ===
     SOPHY_PHONE_NUMBER_ID
   ) {
 
@@ -897,8 +1230,6 @@ function isRealSophyMessage(
   }
 
 
-  // Compatibilidad con registros reales
-  // que indiquen el número visible.
   const display =
     String(
       message.displayPhoneNumber ||
@@ -920,14 +1251,15 @@ function isRealSophyMessage(
   }
 
 
-  // Si no cumple lo anterior,
-  // probablemente es la prueba
-  // automática de Meta.
   return false;
 
 }
 
 
+
+/* ==========================================
+   CREAR CONVERSACIONES
+========================================== */
 
 function buildConversations() {
 
@@ -963,13 +1295,17 @@ function buildConversations() {
 
         conversations[phone] = {
 
-          phone: phone,
+          phone:
+            phone,
 
-          name: "Cliente",
+          name:
+            "Cliente",
 
-          messages: [],
+          messages:
+            [],
 
-          lastMessage: null
+          lastMessage:
+            null
 
         };
 
@@ -982,9 +1318,7 @@ function buildConversations() {
 
       conversation
         .messages
-        .push(
-          message
-        );
+        .push(message);
 
 
       if (
@@ -1003,19 +1337,17 @@ function buildConversations() {
       if (
         !conversation.lastMessage
         ||
-        messageDate(message) >
+        messageDate(message)
+        >
         messageDate(
-          conversation
-            .lastMessage
+          conversation.lastMessage
         )
       ) {
 
-        conversation
-          .lastMessage =
+        conversation.lastMessage =
           message;
 
       }
-
 
     }
   );
@@ -1030,16 +1362,16 @@ function buildConversations() {
         conversation
           .messages
           .sort(
-            function(a,b) {
+            function(a, b) {
 
               return (
-                messageDate(a) -
+                messageDate(a)
+                -
                 messageDate(b)
               );
 
             }
           );
-
 
       }
     );
@@ -1047,6 +1379,10 @@ function buildConversations() {
 }
 
 
+
+/* ==========================================
+   LISTA DE CLIENTES
+========================================== */
 
 function renderConversationList() {
 
@@ -1073,7 +1409,7 @@ function renderConversationList() {
 
 
   list.sort(
-    function(a,b) {
+    function(a, b) {
 
       return (
         messageDate(
@@ -1130,7 +1466,8 @@ function renderConversationList() {
   }
 
 
-  container.innerHTML = "";
+  container.innerHTML =
+    "";
 
 
   list.forEach(
@@ -1138,7 +1475,8 @@ function renderConversationList() {
 
 
       const last =
-        conversation.lastMessage ||
+        conversation.lastMessage
+        ||
         {};
 
 
@@ -1149,14 +1487,15 @@ function renderConversationList() {
 
 
       item.className =
-        "conversation" +
+        "conversation"
+        +
         (
           conversation.phone ===
           selectedPhone
 
-          ? " active"
+            ? " active"
 
-          : ""
+            : ""
         );
 
 
@@ -1176,6 +1515,16 @@ function renderConversationList() {
 
 
       if (
+        last.type === "image"
+      ) {
+
+        preview =
+          "📷 Imagen";
+
+      }
+
+
+      if (
         last.direction ===
         "outgoing"
       ) {
@@ -1189,47 +1538,58 @@ function renderConversationList() {
 
       item.innerHTML =
 
-        '<div class="conversation-name">' +
+        '<div class="conversation-name">'
+        +
 
-          escapeHtml(
-            conversation.name
-          )
+        escapeHtml(
+          conversation.name
+        )
 
-        + '</div>' +
+        +
 
+        '</div>'
+        +
 
-        '<div class="conversation-phone">+' +
+        '<div class="conversation-phone">+'
+        +
 
-          escapeHtml(
-            conversation.phone
-          )
+        escapeHtml(
+          conversation.phone
+        )
 
-        + '</div>' +
+        +
 
+        '</div>'
+        +
 
-        '<div class="conversation-preview">' +
+        '<div class="conversation-preview">'
+        +
 
-          escapeHtml(
-            preview
-          )
+        escapeHtml(
+          preview
+        )
 
-        + '</div>' +
+        +
 
+        '</div>'
+        +
 
-        '<div class="conversation-time">' +
+        '<div class="conversation-time">'
+        +
 
-          escapeHtml(
-            formatDate(last)
-          )
+        escapeHtml(
+          formatDate(last)
+        )
 
-        + '</div>';
+        +
+
+        '</div>';
 
 
       container
         .appendChild(
           item
         );
-
 
     }
   );
@@ -1238,9 +1598,11 @@ function renderConversationList() {
 
 
 
-function selectConversation(
-  phone
-) {
+/* ==========================================
+   SELECCIONAR CLIENTE
+========================================== */
+
+function selectConversation(phone) {
 
   selectedPhone =
     phone;
@@ -1250,7 +1612,8 @@ function selectConversation(
     .getElementById(
       "sendStatus"
     )
-    .textContent = "";
+    .textContent =
+      "";
 
 
   renderConversationList();
@@ -1260,6 +1623,10 @@ function selectConversation(
 }
 
 
+
+/* ==========================================
+   MOSTRAR CHAT
+========================================== */
 
 function renderChat() {
 
@@ -1289,10 +1656,12 @@ function renderChat() {
       .getElementById(
         "chatPhone"
       )
-      .textContent = "";
+      .textContent =
+        "";
 
 
     chat.innerHTML =
+
       '<div class="empty">' +
       'Selecciona una conversación.' +
       '</div>';
@@ -1322,11 +1691,13 @@ function renderChat() {
       "chatPhone"
     )
     .textContent =
-      "+" +
+      "+"
+      +
       conversation.phone;
 
 
-  chat.innerHTML = "";
+  chat.innerHTML =
+    "";
 
 
   conversation
@@ -1347,13 +1718,15 @@ function renderChat() {
 
 
         row.className =
-          "message-row " +
+
+          "message-row "
+          +
           (
             outgoing
 
-            ? "outgoing"
+              ? "outgoing"
 
-            : "incoming"
+              : "incoming"
           );
 
 
@@ -1370,45 +1743,168 @@ function renderChat() {
         const sender =
           outgoing
 
-          ? "Sophy Candy"
+            ? "Sophy Candy"
 
-          : conversation.name;
-
-
-        const text =
-          message.text ||
-          "[Mensaje sin texto]";
+            : conversation.name;
 
 
-        bubble.innerHTML =
-
-          '<div class="sender">' +
-
-            escapeHtml(
-              sender
-            )
-
-          + '</div>' +
+        let content =
+          "";
 
 
-          '<div class="message-text">' +
+        // ==================================
+        // MOSTRAR IMAGEN
+        // ==================================
+
+        if (
+          message.type === "image"
+          &&
+          message.mediaId
+        ) {
+
+
+          const imageUrl =
+
+            "/.netlify/functions/whatsapp-media?id="
+            +
+            encodeURIComponent(
+              message.mediaId
+            );
+
+
+          content +=
+
+            '<a href="'
+            +
+            imageUrl
+            +
+            '" target="_blank" '
+            +
+            'rel="noopener noreferrer">'
+            +
+
+            '<img '
+            +
+            'class="chat-image" '
+            +
+            'src="'
+            +
+            imageUrl
+            +
+            '" '
+            +
+            'alt="Imagen recibida por WhatsApp" '
+            +
+            'loading="lazy" '
+            +
+            'onerror="this.style.display=\\'none\\';'
+            +
+            'this.parentElement.nextElementSibling.style.display=\\'block\\';'
+            +
+            '">'
+            +
+
+            '</a>'
+            +
+
+            '<div '
+            +
+            'class="media-placeholder" '
+            +
+            'style="display:none;">'
+            +
+            'No se pudo cargar la imagen. '
+            +
+            'Pulsa Actualizar para intentarlo nuevamente.'
+            +
+            '</div>';
+
+
+          if (
+            message.caption
+            &&
+            String(
+              message.caption
+            ).trim()
+          ) {
+
+            content +=
+
+              '<div class="image-caption">'
+              +
+
+              escapeHtml(
+                message.caption
+              )
+
+              +
+
+              '</div>';
+
+          }
+
+        }
+
+
+        // ==================================
+        // MOSTRAR TEXTO
+        // ==================================
+
+        else {
+
+
+          const text =
+            message.text
+            ||
+            "[Mensaje sin texto]";
+
+
+          content =
+
+            '<div class="message-text">'
+            +
 
             escapeHtml(
               text
             )
 
-          + '</div>' +
+            +
+
+            '</div>';
+
+        }
 
 
-          '<div class="message-time">' +
 
-            escapeHtml(
-              formatDate(
-                message
-              )
+        bubble.innerHTML =
+
+          '<div class="sender">'
+          +
+
+          escapeHtml(
+            sender
+          )
+
+          +
+
+          '</div>'
+          +
+
+          content
+          +
+
+          '<div class="message-time">'
+          +
+
+          escapeHtml(
+            formatDate(
+              message
             )
+          )
 
-          + '</div>';
+          +
+
+          '</div>';
 
 
         row.appendChild(
@@ -1420,7 +1916,6 @@ function renderChat() {
           row
         );
 
-
       }
     );
 
@@ -1431,6 +1926,10 @@ function renderChat() {
 }
 
 
+
+/* ==========================================
+   CARGAR MENSAJES
+========================================== */
 
 async function loadMessages() {
 
@@ -1471,21 +1970,22 @@ async function loadMessages() {
     allMessages =
       Array.isArray(result)
 
-      ? result
+        ? result
 
-      : [];
+        : [];
 
 
     buildConversations();
 
 
     const available =
+
       Object
         .values(
           conversations
         )
         .sort(
-          function(a,b) {
+          function(a, b) {
 
             return (
 
@@ -1513,7 +2013,8 @@ async function loadMessages() {
       ]
     ) {
 
-      selectedPhone = "";
+      selectedPhone =
+        "";
 
     }
 
@@ -1541,7 +2042,8 @@ async function loadMessages() {
       )
       .textContent =
 
-        "Actualizado: " +
+        "Actualizado: "
+        +
 
         new Date()
           .toLocaleTimeString(
@@ -1553,9 +2055,7 @@ async function loadMessages() {
   catch(error) {
 
 
-    console.error(
-      error
-    );
+    console.error(error);
 
 
     document
@@ -1564,16 +2064,21 @@ async function loadMessages() {
       )
       .innerHTML =
 
-        '<div class="empty">' +
-        'Error cargando mensajes.' +
+        '<div class="empty">'
+        +
+        'Error cargando mensajes.'
+        +
         '</div>';
-
 
   }
 
 }
 
 
+
+/* ==========================================
+   ENVIAR RESPUESTA DE TEXTO
+========================================== */
 
 async function sendReply() {
 
@@ -1600,8 +2105,10 @@ async function sendReply() {
     status.textContent =
       "Selecciona un cliente.";
 
+
     status.className =
       "send-status error";
+
 
     return;
 
@@ -1617,21 +2124,26 @@ async function sendReply() {
     status.textContent =
       "Escribe un mensaje.";
 
+
     status.className =
       "send-status error";
+
 
     return;
 
   }
 
 
-  button.disabled = true;
+  button.disabled =
+    true;
+
 
   button.textContent =
     "Enviando...";
 
 
-  status.textContent = "";
+  status.textContent =
+    "";
 
 
   try {
@@ -1696,7 +2208,8 @@ async function sendReply() {
     }
 
 
-    textarea.value = "";
+    textarea.value =
+      "";
 
 
     status.textContent =
@@ -1717,30 +2230,28 @@ async function sendReply() {
   catch(error) {
 
 
-    console.error(
-      error
-    );
+    console.error(error);
 
 
     status.textContent =
-      "Error: " +
+      "Error: "
+      +
       error.message;
 
 
     status.className =
       "send-status error";
 
-
   }
   finally {
 
 
-    button.disabled = false;
+    button.disabled =
+      false;
 
 
     button.textContent =
       "Enviar WhatsApp";
-
 
   }
 
@@ -1748,18 +2259,18 @@ async function sendReply() {
 
 
 
-// CARGA INICIAL
+/* ==========================================
+   INICIAR
+========================================== */
 
 loadMessages();
 
-
-// ACTUALIZACIÓN AUTOMÁTICA
-// CADA 20 SEGUNDOS
 
 setInterval(
   loadMessages,
   20000
 );
+
 
 </script>
 
@@ -1768,6 +2279,7 @@ setInterval(
 
 </html>
 `;
+
 
   return new Response(
     html,
@@ -1785,4 +2297,5 @@ setInterval(
       }
     }
   );
+
 };
