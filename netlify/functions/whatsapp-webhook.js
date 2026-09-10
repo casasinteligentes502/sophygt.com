@@ -7,18 +7,6 @@ function getMessageText(message) {
     return message.text?.body || "";
   }
 
-  if (message.type === "button") {
-    return message.button?.text || "[Botón]";
-  }
-
-  if (message.type === "interactive") {
-    return (
-      message.interactive?.button_reply?.title ||
-      message.interactive?.list_reply?.title ||
-      "[Mensaje interactivo]"
-    );
-  }
-
   if (message.type === "image") {
     return message.image?.caption || "[Imagen]";
   }
@@ -35,6 +23,10 @@ function getMessageText(message) {
     return message.document?.filename || "[Documento]";
   }
 
+  if (message.type === "sticker") {
+    return "[Sticker]";
+  }
+
   if (message.type === "location") {
     return "[Ubicación]";
   }
@@ -43,8 +35,16 @@ function getMessageText(message) {
     return "[Contacto]";
   }
 
-  if (message.type === "sticker") {
-    return "[Sticker]";
+  if (message.type === "button") {
+    return message.button?.text || "[Botón]";
+  }
+
+  if (message.type === "interactive") {
+    return (
+      message.interactive?.button_reply?.title ||
+      message.interactive?.list_reply?.title ||
+      "[Mensaje interactivo]"
+    );
   }
 
   return "[Mensaje]";
@@ -58,7 +58,7 @@ export default async (request) => {
 
 
   // ==========================================
-  // VERIFICACIÓN DEL WEBHOOK POR META
+  // VERIFICACIÓN DEL WEBHOOK
   // ==========================================
 
   if (request.method === "GET") {
@@ -81,37 +81,22 @@ export default async (request) => {
       token === VERIFY_TOKEN
     ) {
 
-      console.log(
-        "WEBHOOK VERIFICADO CORRECTAMENTE"
-      );
-
       return new Response(
         challenge || "",
-        {
-          status: 200,
-          headers: {
-            "Content-Type": "text/plain"
-          }
-        }
+        { status: 200 }
       );
     }
 
 
-    console.log(
-      "FALLO DE VERIFICACION"
-    );
-
     return new Response(
       "Verification failed",
-      {
-        status: 403
-      }
+      { status: 403 }
     );
   }
 
 
   // ==========================================
-  // RECEPCIÓN DE EVENTOS DE WHATSAPP
+  // RECIBIR MENSAJES
   // ==========================================
 
   if (request.method === "POST") {
@@ -127,13 +112,6 @@ export default async (request) => {
         await request.json();
 
 
-      console.log(
-        "PAYLOAD RECIBIDO:",
-        JSON.stringify(data)
-      );
-
-
-      // Soporta mensaje real y prueba de Meta
       const value =
         data?.entry?.[0]
           ?.changes?.[0]
@@ -160,12 +138,7 @@ export default async (request) => {
         value.metadata || {};
 
 
-      // Eventos como estados, entregado, leído, etc.
       if (messages.length === 0) {
-
-        console.log(
-          "POST RECIBIDO, PERO SIN MENSAJES"
-        );
 
         return new Response(
           "EVENT_RECEIVED",
@@ -175,13 +148,17 @@ export default async (request) => {
 
 
       const store =
-        getStore("whatsapp-messages");
+        getStore(
+          "whatsapp-messages"
+        );
 
 
       for (const message of messages) {
 
         const messageFrom =
-          String(message.from || "");
+          String(
+            message.from || ""
+          );
 
 
         const contact =
@@ -204,9 +181,29 @@ export default async (request) => {
 
         const messageId =
           message.id ||
-          `msg-${Date.now()}-${Math.random()
-            .toString(36)
-            .slice(2, 8)}`;
+          `msg-${Date.now()}`;
+
+
+        // ======================================
+        // DATOS DE IMAGEN
+        // ======================================
+
+        const mediaId =
+          message.type === "image"
+            ? message.image?.id || ""
+            : "";
+
+
+        const mimeType =
+          message.type === "image"
+            ? message.image?.mime_type || ""
+            : "";
+
+
+        const caption =
+          message.type === "image"
+            ? message.image?.caption || ""
+            : "";
 
 
         const record = {
@@ -232,8 +229,6 @@ export default async (request) => {
           receivedAt:
             new Date().toISOString(),
 
-
-          // Identificación para la bandeja
           direction:
             "incoming",
 
@@ -243,8 +238,6 @@ export default async (request) => {
           status:
             "received",
 
-
-          // Número empresarial Sophy Candy
           phoneNumberId:
             metadata.phone_number_id || "",
 
@@ -252,8 +245,22 @@ export default async (request) => {
             metadata.display_phone_number || "",
 
 
+          // ==================================
+          // INFORMACIÓN MULTIMEDIA
+          // ==================================
+
+          mediaId:
+            mediaId,
+
+          mimeType:
+            mimeType,
+
+          caption:
+            caption,
+
           raw:
             message
+
         };
 
 
@@ -268,7 +275,8 @@ export default async (request) => {
 
 
         console.log(
-          "MENSAJE GUARDADO COMO INCOMING:",
+          "MENSAJE GUARDADO:",
+          message.type,
           key
         );
       }
@@ -279,7 +287,8 @@ export default async (request) => {
         { status: 200 }
       );
 
-    } catch (error) {
+    }
+    catch (error) {
 
       console.error(
         "WEBHOOK ERROR:",
