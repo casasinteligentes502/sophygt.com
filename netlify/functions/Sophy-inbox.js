@@ -37,8 +37,7 @@ export default async (request) => {
       {
         status: 401,
         headers: {
-          "WWW-Authenticate":
-            'Basic realm="Sophy Candy WhatsApp"',
+          "WWW-Authenticate": 'Basic realm="Sophy Candy WhatsApp"',
           "Cache-Control": "no-store"
         }
       }
@@ -48,6 +47,7 @@ export default async (request) => {
 
   const html = `
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
@@ -64,9 +64,7 @@ export default async (request) => {
   content="noindex,nofollow,noarchive"
 >
 
-<title>
-Sophy Candy - Bandeja WhatsApp
-</title>
+<title>Sophy Candy - Bandeja WhatsApp</title>
 
 
 <style>
@@ -75,689 +73,420 @@ Sophy Candy - Bandeja WhatsApp
   box-sizing: border-box;
 }
 
-
 body {
   margin: 0;
-
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
-
+  font-family: Arial, Helvetica, sans-serif;
   background: #e9edef;
-
   color: #111b21;
 }
 
 
-/* ==========================================
-   BARRA SUPERIOR
-========================================== */
+/* CABECERA */
 
 .topbar {
-
   background: #075e54;
-
   color: white;
-
   min-height: 72px;
-
   padding: 14px 24px;
-
   display: flex;
-
   justify-content: space-between;
-
   align-items: center;
 }
 
-
 .topbar h1 {
-
   margin: 0;
-
   font-size: 21px;
 }
 
-
 .topbar small {
-
   opacity: .9;
 }
 
-
 .business-number {
-
   font-weight: bold;
 }
 
 
-/* ==========================================
-   CONTENEDOR PRINCIPAL
-========================================== */
+/* CONTENEDOR */
 
 .app {
-
   width: calc(100% - 30px);
-
   max-width: 1300px;
-
   height: calc(100vh - 125px);
-
   min-height: 600px;
-
   margin: 18px auto 0;
-
   display: grid;
-
-  grid-template-columns:
-    340px 1fr;
-
+  grid-template-columns: 340px 1fr;
   background: white;
-
   border-radius: 10px;
-
   overflow: hidden;
-
-  box-shadow:
-    0 3px 14px
-    rgba(0,0,0,.13);
+  box-shadow: 0 3px 14px rgba(0,0,0,.13);
 }
 
 
-/* ==========================================
-   COLUMNA IZQUIERDA
-========================================== */
+/* PANEL IZQUIERDO */
 
 .sidebar {
-
-  border-right:
-    1px solid #d9d9d9;
-
+  border-right: 1px solid #d9d9d9;
   background: white;
-
   display: flex;
-
   flex-direction: column;
-
   min-width: 0;
 }
 
-
 .sidebar-header {
-
   padding: 14px 16px;
-
   background: #f0f2f5;
-
-  border-bottom:
-    1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 
-
 .online {
-
   color: #128c7e;
-
   font-weight: bold;
 }
 
-
 .search {
-
   padding: 10px;
-
-  background: white;
-
-  border-bottom:
-    1px solid #eee;
+  border-bottom: 1px solid #eee;
 }
 
-
 .search input {
-
   width: 100%;
-
   padding: 10px 12px;
-
-  border:
-    1px solid #ddd;
-
+  border: 1px solid #ddd;
   border-radius: 8px;
-
   outline: none;
 }
 
-
-.search input:focus {
-
-  border-color:
-    #128c7e;
-}
-
-
 .conversations {
-
   flex: 1;
-
   overflow-y: auto;
 }
 
-
 .conversation {
-
   padding: 13px 15px;
-
-  border-bottom:
-    1px solid #eee;
-
+  border-bottom: 1px solid #eee;
   cursor: pointer;
 }
 
-
 .conversation:hover {
-
   background: #f5f6f6;
 }
 
-
 .conversation.active {
-
   background: #e9edef;
 }
 
-
 .conversation-name {
-
   font-weight: bold;
-
   font-size: 14px;
 }
 
-
 .conversation-phone {
-
   color: #667781;
-
   font-size: 12px;
-
   margin-top: 3px;
 }
 
-
 .conversation-preview {
-
   color: #667781;
-
   font-size: 12px;
-
   margin-top: 6px;
-
   white-space: nowrap;
-
   overflow: hidden;
-
   text-overflow: ellipsis;
 }
 
-
 .conversation-time {
-
   color: #888;
-
   font-size: 10px;
-
   margin-top: 5px;
 }
 
 
-/* ==========================================
-   PANEL DERECHO
-========================================== */
+/* PANEL DERECHO */
 
 .chat-panel {
-
   display: flex;
-
   flex-direction: column;
-
   min-width: 0;
 }
 
-
 .chat-header {
-
   min-height: 68px;
-
   padding: 12px 18px;
-
   background: #f0f2f5;
-
-  border-bottom:
-    1px solid #ddd;
-
+  border-bottom: 1px solid #ddd;
   display: flex;
-
-  justify-content:
-    space-between;
-
+  justify-content: space-between;
   align-items: center;
 }
 
-
 .chat-name {
-
   font-weight: bold;
-
   font-size: 16px;
 }
 
-
 .chat-phone {
-
   color: #667781;
-
   font-size: 12px;
-
   margin-top: 3px;
 }
 
-
 .refresh-button {
-
   border: 0;
-
   background: #128c7e;
-
   color: white;
-
   border-radius: 7px;
-
   padding: 9px 14px;
-
   font-weight: bold;
-
   cursor: pointer;
 }
 
 
-.refresh-button:hover {
-
-  background: #0d766a;
-}
-
-
-/* ==========================================
-   ÁREA DEL CHAT
-========================================== */
+/* CHAT */
 
 .chat {
-
   flex: 1;
-
   background: #efeae2;
-
   padding: 20px;
-
   overflow-y: auto;
 }
 
-
 .message-row {
-
   display: flex;
-
   margin-bottom: 10px;
 }
 
-
 .incoming {
-
   justify-content: flex-start;
 }
 
-
 .outgoing {
-
   justify-content: flex-end;
 }
 
-
 .bubble {
-
   max-width: 72%;
-
   padding: 9px 11px 6px;
-
   border-radius: 9px;
-
-  box-shadow:
-    0 1px 2px
-    rgba(0,0,0,.12);
+  box-shadow: 0 1px 2px rgba(0,0,0,.12);
 }
-
 
 .incoming .bubble {
-
   background: white;
-
-  border-top-left-radius:
-    2px;
 }
-
 
 .outgoing .bubble {
-
   background: #d9fdd3;
-
-  border-top-right-radius:
-    2px;
 }
 
-
 .sender {
-
   font-size: 11px;
-
   color: #087f5b;
-
   font-weight: bold;
-
   margin-bottom: 4px;
 }
 
-
 .message-text {
-
   font-size: 14px;
-
   line-height: 1.4;
-
   white-space: pre-wrap;
-
   word-break: break-word;
 }
 
-
 .message-time {
-
   font-size: 10px;
-
   color: #667781;
-
   text-align: right;
-
   margin-top: 5px;
 }
 
 
-/* ==========================================
-   IMÁGENES DE WHATSAPP
-========================================== */
+/* IMÁGENES DEL CHAT */
 
 .chat-image {
-
   display: block;
-
   width: 100%;
-
   max-width: 320px;
-
   max-height: 420px;
-
   object-fit: contain;
-
   border-radius: 8px;
-
   margin-bottom: 7px;
-
   cursor: pointer;
-
   background: #f5f5f5;
 }
 
-
-.chat-image:hover {
-
-  opacity: .96;
-}
-
-
 .image-caption {
-
   margin-top: 5px;
-
   font-size: 14px;
-
   line-height: 1.4;
-
   white-space: pre-wrap;
-
   word-break: break-word;
 }
 
 
-.media-placeholder {
+/* IMAGEN SELECCIONADA */
 
-  padding: 18px;
-
-  border-radius: 8px;
-
-  background: #f4f4f4;
-
-  color: #667781;
-
+.image-selected-bar {
+  display: none;
+  background: #e9edef;
+  padding: 8px 14px;
+  border-top: 1px solid #ddd;
   font-size: 13px;
 }
 
-
-/* ==========================================
-   RESPONDER
-========================================== */
-
-.reply-area {
-
-  padding: 12px;
-
-  background: #f0f2f5;
-
+.image-selected-bar.active {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-  gap: 9px;
+.remove-image {
+  border: 0;
+  background: transparent;
+  color: #c92a2a;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 
+/* ÁREA DE RESPUESTA */
+
+.reply-area {
+  padding: 12px;
+  background: #f0f2f5;
+  display: flex;
+  gap: 9px;
+}
+
 .reply-area textarea {
-
   flex: 1;
-
   min-height: 50px;
-
   max-height: 110px;
-
   padding: 11px 12px;
-
-  border:
-    1px solid #ccc;
-
+  border: 1px solid #ccc;
   border-radius: 9px;
-
   resize: vertical;
-
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
-
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
-
   outline: none;
 }
 
 
-.reply-area textarea:focus {
+/* BOTÓN IMAGEN */
 
-  border-color: #128c7e;
+.attach-button {
+  border: 0;
+  background: #54656f;
+  color: white;
+  border-radius: 8px;
+  padding: 0 16px;
+  font-weight: bold;
+  cursor: pointer;
+  min-width: 105px;
+}
+
+.attach-button:hover {
+  background: #3e4b52;
 }
 
 
+/* BOTÓN ENVIAR */
+
 .send-button {
-
   border: 0;
-
   background: #25d366;
-
   color: white;
-
   border-radius: 8px;
-
   padding: 0 18px;
-
   font-weight: bold;
-
   cursor: pointer;
 }
 
-
 .send-button:hover {
-
   background: #1ebe5d;
 }
 
-
-.send-button:disabled {
-
+.send-button:disabled,
+.attach-button:disabled {
   opacity: .6;
-
   cursor: wait;
 }
 
-
 .send-status {
-
   background: #f0f2f5;
-
   padding: 0 13px 8px;
-
   min-height: 22px;
-
   font-size: 12px;
 }
 
-
 .success {
-
   color: #087f5b;
-
   font-weight: bold;
 }
-
 
 .error {
-
   color: #c92a2a;
-
   font-weight: bold;
 }
 
-
 .empty {
-
   padding: 40px 20px;
-
   text-align: center;
-
   color: #667781;
 }
 
 
 footer {
-
   text-align: center;
-
   font-size: 11px;
-
   color: #777;
-
   padding: 10px;
 }
 
 
-/* ==========================================
-   CELULAR
-========================================== */
+/* CELULAR */
 
 @media(max-width:800px) {
 
   .topbar {
-
     padding: 11px;
   }
 
-
   .topbar h1 {
-
     font-size: 17px;
   }
 
-
   .business-number {
-
     font-size: 13px;
   }
 
-
   .app {
-
     width: 100%;
-
     margin: 0;
-
-    height:
-      calc(100vh - 82px);
-
-    min-height: 600px;
-
+    height: calc(100vh - 82px);
     border-radius: 0;
-
-    grid-template-columns:
-      150px 1fr;
+    grid-template-columns: 150px 1fr;
   }
-
-
-  .conversation {
-
-    padding: 10px 8px;
-  }
-
-
-  .conversation-preview {
-
-    display: none;
-  }
-
 
   .bubble {
-
     max-width: 90%;
   }
 
-
-  .chat-image {
-
-    max-width: 100%;
-  }
-
-
   .reply-area {
-
-    flex-direction: column;
+    flex-wrap: wrap;
   }
 
+  .reply-area textarea {
+    flex-basis: 100%;
+  }
 
+  .attach-button,
   .send-button {
-
     min-height: 42px;
+    flex: 1;
   }
 }
 
@@ -770,7 +499,6 @@ footer {
 
 
 <div class="topbar">
-
 
   <div>
 
@@ -791,196 +519,169 @@ footer {
 
   </div>
 
-
 </div>
 
 
 <div class="app">
 
 
-  <!-- =======================================
-       LISTA DE CLIENTES
-  ======================================== -->
-
-  <aside class="sidebar">
+<aside class="sidebar">
 
 
-    <div class="sidebar-header">
+  <div class="sidebar-header">
 
-      Estado:
+    Estado:
 
-      <span class="online">
+    <span class="online">
+      ● Conectado
+    </span>
 
-        ● Conectado
+    <br>
 
-      </span>
+    <small id="lastUpdate">
+      Cargando...
+    </small>
 
-      <br>
-
-      <small id="lastUpdate">
-
-        Cargando...
-
-      </small>
-
-    </div>
+  </div>
 
 
-    <div class="search">
+  <div class="search">
 
-      <input
-
-        id="searchInput"
-
-        type="text"
-
-        placeholder="Buscar cliente..."
-
-        oninput=
-          "renderConversationList()"
-
-      >
-
-    </div>
-
-
-    <div
-
-      id="conversations"
-
-      class="conversations"
-
+    <input
+      id="searchInput"
+      type="text"
+      placeholder="Buscar cliente..."
+      oninput="renderConversationList()"
     >
 
-      <div class="empty">
+  </div>
 
-        Cargando clientes...
 
-      </div>
+  <div
+    id="conversations"
+    class="conversations"
+  >
 
+    <div class="empty">
+      Cargando clientes...
     </div>
 
-
-  </aside>
-
+  </div>
 
 
-  <!-- =======================================
-       PANEL DE CONVERSACIÓN
-  ======================================== -->
-
-  <section class="chat-panel">
+</aside>
 
 
-    <div class="chat-header">
+
+<section class="chat-panel">
 
 
-      <div>
+  <div class="chat-header">
 
+    <div>
 
-        <div
-
-          id="chatName"
-
-          class="chat-name"
-
-        >
-
-          Selecciona un cliente
-
-        </div>
-
-
-        <div
-
-          id="chatPhone"
-
-          class="chat-phone"
-
-        ></div>
-
-
-      </div>
-
-
-      <button
-
-        class="refresh-button"
-
-        onclick="loadMessages()"
-
+      <div
+        id="chatName"
+        class="chat-name"
       >
+        Selecciona un cliente
+      </div>
 
-        Actualizar
-
-      </button>
-
+      <div
+        id="chatPhone"
+        class="chat-phone"
+      ></div>
 
     </div>
 
 
+    <button
+      class="refresh-button"
+      onclick="loadMessages()"
+    >
+      Actualizar
+    </button>
 
-    <div
+  </div>
 
-      id="chat"
 
-      class="chat"
+  <div
+    id="chat"
+    class="chat"
+  >
 
+    <div class="empty">
+      Selecciona una conversación.
+    </div>
+
+  </div>
+
+
+  <div
+    id="imageSelectedBar"
+    class="image-selected-bar"
+  >
+
+    <span id="imageSelectedName"></span>
+
+    <button
+      class="remove-image"
+      onclick="clearSelectedImage()"
+      title="Quitar imagen"
+    >
+      ×
+    </button>
+
+  </div>
+
+
+  <div class="reply-area">
+
+
+    <input
+      id="imageInput"
+      type="file"
+      accept="image/jpeg,image/png"
+      style="display:none"
+      onchange="handleImageSelected(event)"
     >
 
-      <div class="empty">
 
-        Selecciona una conversación.
-
-      </div>
-
-    </div>
-
-
-
-    <div class="reply-area">
+    <button
+      id="attachButton"
+      class="attach-button"
+      onclick="chooseImage()"
+    >
+      📎 Imagen
+    </button>
 
 
-      <textarea
-
-        id="replyText"
-
-        maxlength="4096"
-
-        placeholder=
-          "Escribe una respuesta para el cliente..."
-
-      ></textarea>
+    <textarea
+      id="replyText"
+      maxlength="4096"
+      placeholder="Escribe una respuesta o descripción de la imagen..."
+    ></textarea>
 
 
-      <button
-
-        id="sendButton"
-
-        class="send-button"
-
-        onclick="sendReply()"
-
-      >
-
-        Enviar WhatsApp
-
-      </button>
+    <button
+      id="sendButton"
+      class="send-button"
+      onclick="sendReply()"
+    >
+      Enviar WhatsApp
+    </button>
 
 
-    </div>
+  </div>
 
 
-    <div
-
-      id="sendStatus"
-
-      class="send-status"
-
-    ></div>
+  <div
+    id="sendStatus"
+    class="send-status"
+  ></div>
 
 
-  </section>
+</section>
 
 
 </div>
@@ -988,17 +689,17 @@ footer {
 
 <footer>
 
-  Los mensajes se conservan durante un máximo de
-  <strong>90 días</strong>
+Los mensajes se conservan durante un máximo de
+<strong>90 días</strong>
 
-  ·
+·
 
-  Soporte WhatsApp API
-  <strong>Q500.00 mensuales</strong>
+Soporte WhatsApp API
+<strong>Q500.00 mensuales</strong>
 
-  ·
+·
 
-  Cargos de Meta/WhatsApp no incluidos
+Cargos de Meta/WhatsApp no incluidos
 
 </footer>
 
@@ -1013,17 +714,12 @@ let conversations = {};
 
 let selectedPhone = "";
 
+let selectedImageFile = null;
 
-// ID DEL NÚMERO OFICIAL DE SOPHY CANDY
 
 const SOPHY_PHONE_NUMBER_ID =
   "1273794675819369";
 
-
-
-/* ==========================================
-   SEGURIDAD DE TEXTO
-========================================== */
 
 function escapeHtml(value) {
 
@@ -1031,93 +727,44 @@ function escapeHtml(value) {
     value === null ||
     value === undefined
   ) {
-
     return "";
-
   }
 
-
   return String(value)
-
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
-
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 
-
-/* ==========================================
-   FECHAS
-========================================== */
 
 function messageDate(message) {
 
   if (message.receivedAt) {
 
     const date =
-      new Date(
-        message.receivedAt
-      );
+      new Date(message.receivedAt);
 
-
-    if (
-      !Number.isNaN(
-        date.getTime()
-      )
-    ) {
-
+    if (!Number.isNaN(date.getTime())) {
       return date;
-
     }
-
   }
 
 
   if (message.timestamp) {
 
     const number =
-      Number(
-        message.timestamp
-      );
+      Number(message.timestamp);
 
-
-    if (
-      !Number.isNaN(number)
-    ) {
-
-      return new Date(
-        number * 1000
-      );
-
+    if (!Number.isNaN(number)) {
+      return new Date(number * 1000);
     }
-
   }
 
 
   return new Date(0);
-
 }
 
 
@@ -1127,48 +774,28 @@ function formatDate(message) {
   const date =
     messageDate(message);
 
-
   if (
-    Number.isNaN(
-      date.getTime()
-    )
-    ||
+    Number.isNaN(date.getTime()) ||
     date.getTime() === 0
   ) {
-
     return "";
-
   }
 
 
   return date.toLocaleString(
-
     "es-GT",
-
     {
-
-      dateStyle:
-        "short",
-
-      timeStyle:
-        "short"
-
+      dateStyle: "short",
+      timeStyle: "short"
     }
-
   );
-
 }
 
 
 
-/* ==========================================
-   TELÉFONO DEL CLIENTE
-========================================== */
-
 function getMessagePhone(message) {
 
   let value = "";
-
 
   if (
     message.direction ===
@@ -1180,29 +807,19 @@ function getMessagePhone(message) {
       message.from ||
       "";
 
-  }
-  else {
+  } else {
 
     value =
       message.from ||
       "";
-
   }
 
 
   return String(value)
-    .replace(
-      /\\D/g,
-      ""
-    );
-
+    .replace(/\\D/g, "");
 }
 
 
-
-/* ==========================================
-   OCULTAR PRUEBAS INTERNAS DE META
-========================================== */
 
 function isRealSophyMessage(message) {
 
@@ -1210,9 +827,7 @@ function isRealSophyMessage(message) {
     message.direction ===
     "outgoing"
   ) {
-
     return true;
-
   }
 
 
@@ -1220,13 +835,9 @@ function isRealSophyMessage(message) {
     String(
       message.phoneNumberId ||
       ""
-    )
-    ===
-    SOPHY_PHONE_NUMBER_ID
+    ) === SOPHY_PHONE_NUMBER_ID
   ) {
-
     return true;
-
   }
 
 
@@ -1235,31 +846,16 @@ function isRealSophyMessage(message) {
       message.displayPhoneNumber ||
       ""
     )
-    .replace(
-      /\\D/g,
-      ""
-    );
+    .replace(/\\D/g, "");
 
 
-  if (
+  return (
     display ===
     "50239935344"
-  ) {
-
-    return true;
-
-  }
-
-
-  return false;
-
+  );
 }
 
 
-
-/* ==========================================
-   CREAR CONVERSACIONES
-========================================== */
 
 function buildConversations() {
 
@@ -1275,40 +871,27 @@ function buildConversations() {
   realMessages.forEach(
     function(message) {
 
-
       const phone =
-        getMessagePhone(
-          message
-        );
+        getMessagePhone(message);
 
 
       if (!phone) {
-
         return;
-
       }
 
 
-      if (
-        !conversations[phone]
-      ) {
+      if (!conversations[phone]) {
 
         conversations[phone] = {
 
-          phone:
-            phone,
+          phone: phone,
 
-          name:
-            "Cliente",
+          name: "Cliente",
 
-          messages:
-            [],
+          messages: [],
 
-          lastMessage:
-            null
-
+          lastMessage: null
         };
-
       }
 
 
@@ -1316,29 +899,25 @@ function buildConversations() {
         conversations[phone];
 
 
-      conversation
-        .messages
-        .push(message);
+      conversation.messages.push(
+        message
+      );
 
 
       if (
         message.direction !==
-        "outgoing"
-        &&
+        "outgoing" &&
         message.name
       ) {
 
         conversation.name =
           message.name;
-
       }
 
 
       if (
-        !conversation.lastMessage
-        ||
-        messageDate(message)
-        >
+        !conversation.lastMessage ||
+        messageDate(message) >
         messageDate(
           conversation.lastMessage
         )
@@ -1346,9 +925,7 @@ function buildConversations() {
 
         conversation.lastMessage =
           message;
-
       }
-
     }
   );
 
@@ -1358,31 +935,20 @@ function buildConversations() {
     .forEach(
       function(conversation) {
 
+        conversation.messages.sort(
+          function(a, b) {
 
-        conversation
-          .messages
-          .sort(
-            function(a, b) {
-
-              return (
-                messageDate(a)
-                -
-                messageDate(b)
-              );
-
-            }
-          );
-
+            return (
+              messageDate(a) -
+              messageDate(b)
+            );
+          }
+        );
       }
     );
-
 }
 
 
-
-/* ==========================================
-   LISTA DE CLIENTES
-========================================== */
 
 function renderConversationList() {
 
@@ -1420,7 +986,6 @@ function renderConversationList() {
           a.lastMessage
         )
       );
-
     }
   );
 
@@ -1432,29 +997,21 @@ function renderConversationList() {
         function(conversation) {
 
           return (
-
-            conversation
-              .name
+            conversation.name
               .toLowerCase()
               .includes(search)
 
             ||
 
-            conversation
-              .phone
+            conversation.phone
               .includes(search)
-
           );
-
         }
       );
-
   }
 
 
-  if (
-    list.length === 0
-  ) {
+  if (list.length === 0) {
 
     container.innerHTML =
       '<div class="empty">' +
@@ -1462,21 +1019,17 @@ function renderConversationList() {
       '</div>';
 
     return;
-
   }
 
 
-  container.innerHTML =
-    "";
+  container.innerHTML = "";
 
 
   list.forEach(
     function(conversation) {
 
-
       const last =
-        conversation.lastMessage
-        ||
+        conversation.lastMessage ||
         {};
 
 
@@ -1492,10 +1045,8 @@ function renderConversationList() {
         (
           conversation.phone ===
           selectedPhone
-
-            ? " active"
-
-            : ""
+          ? " active"
+          : ""
         );
 
 
@@ -1505,7 +1056,6 @@ function renderConversationList() {
           selectConversation(
             conversation.phone
           );
-
         };
 
 
@@ -1515,12 +1065,19 @@ function renderConversationList() {
 
 
       if (
-        last.type === "image"
+        last.type ===
+        "image"
       ) {
 
         preview =
           "📷 Imagen";
 
+        if (last.caption) {
+
+          preview +=
+            " - " +
+            last.caption;
+        }
       }
 
 
@@ -1532,75 +1089,36 @@ function renderConversationList() {
         preview =
           "Tú: " +
           preview;
-
       }
 
 
       item.innerHTML =
 
-        '<div class="conversation-name">'
-        +
+        '<div class="conversation-name">' +
+        escapeHtml(conversation.name) +
+        '</div>' +
 
-        escapeHtml(
-          conversation.name
-        )
+        '<div class="conversation-phone">+' +
+        escapeHtml(conversation.phone) +
+        '</div>' +
 
-        +
+        '<div class="conversation-preview">' +
+        escapeHtml(preview) +
+        '</div>' +
 
-        '</div>'
-        +
-
-        '<div class="conversation-phone">+'
-        +
-
-        escapeHtml(
-          conversation.phone
-        )
-
-        +
-
-        '</div>'
-        +
-
-        '<div class="conversation-preview">'
-        +
-
-        escapeHtml(
-          preview
-        )
-
-        +
-
-        '</div>'
-        +
-
-        '<div class="conversation-time">'
-        +
-
-        escapeHtml(
-          formatDate(last)
-        )
-
-        +
-
+        '<div class="conversation-time">' +
+        escapeHtml(formatDate(last)) +
         '</div>';
 
 
-      container
-        .appendChild(
-          item
-        );
-
+      container.appendChild(
+        item
+      );
     }
   );
-
 }
 
 
-
-/* ==========================================
-   SELECCIONAR CLIENTE
-========================================== */
 
 function selectConversation(phone) {
 
@@ -1608,25 +1126,22 @@ function selectConversation(phone) {
     phone;
 
 
+  clearSelectedImage();
+
+
   document
     .getElementById(
       "sendStatus"
     )
-    .textContent =
-      "";
+    .textContent = "";
 
 
   renderConversationList();
 
   renderChat();
-
 }
 
 
-
-/* ==========================================
-   MOSTRAR CHAT
-========================================== */
 
 function renderChat() {
 
@@ -1637,11 +1152,8 @@ function renderChat() {
 
 
   if (
-    !selectedPhone
-    ||
-    !conversations[
-      selectedPhone
-    ]
+    !selectedPhone ||
+    !conversations[selectedPhone]
   ) {
 
     document
@@ -1656,26 +1168,20 @@ function renderChat() {
       .getElementById(
         "chatPhone"
       )
-      .textContent =
-        "";
+      .textContent = "";
 
 
     chat.innerHTML =
-
       '<div class="empty">' +
       'Selecciona una conversación.' +
       '</div>';
 
-
     return;
-
   }
 
 
   const conversation =
-    conversations[
-      selectedPhone
-    ];
+    conversations[selectedPhone];
 
 
   document
@@ -1691,266 +1197,152 @@ function renderChat() {
       "chatPhone"
     )
     .textContent =
-      "+"
-      +
+      "+" +
       conversation.phone;
 
 
-  chat.innerHTML =
-    "";
+  chat.innerHTML = "";
 
 
-  conversation
-    .messages
-    .forEach(
-      function(message) {
+  conversation.messages.forEach(
+    function(message) {
+
+      const outgoing =
+        message.direction ===
+        "outgoing";
 
 
-        const outgoing =
-          message.direction ===
-          "outgoing";
+      const row =
+        document.createElement(
+          "div"
+        );
 
 
-        const row =
-          document.createElement(
-            "div"
-          );
-
-
-        row.className =
-
-          "message-row "
-          +
-          (
-            outgoing
-
-              ? "outgoing"
-
-              : "incoming"
-          );
-
-
-        const bubble =
-          document.createElement(
-            "div"
-          );
-
-
-        bubble.className =
-          "bubble";
-
-
-        const sender =
+      row.className =
+        "message-row "
+        +
+        (
           outgoing
-
-            ? "Sophy Candy"
-
-            : conversation.name;
-
-
-        let content =
-          "";
+          ? "outgoing"
+          : "incoming"
+        );
 
 
-        // ==================================
-        // MOSTRAR IMAGEN
-        // ==================================
+      const bubble =
+        document.createElement(
+          "div"
+        );
+
+
+      bubble.className =
+        "bubble";
+
+
+      const sender =
+        outgoing
+        ? "Sophy Candy"
+        : conversation.name;
+
+
+      let content = "";
+
+
+      if (
+        message.type === "image" &&
+        message.mediaId
+      ) {
+
+        const imageUrl =
+          "/.netlify/functions/whatsapp-media?id="
+          +
+          encodeURIComponent(
+            message.mediaId
+          );
+
+
+        content +=
+          '<a href="' +
+          imageUrl +
+          '" target="_blank" rel="noopener noreferrer">' +
+
+          '<img class="chat-image" src="' +
+          imageUrl +
+          '" alt="Imagen de WhatsApp">' +
+
+          '</a>';
+
 
         if (
-          message.type === "image"
-          &&
-          message.mediaId
+          message.caption &&
+          String(message.caption).trim()
         ) {
 
-
-          const imageUrl =
-
-            "/.netlify/functions/whatsapp-media?id="
-            +
-            encodeURIComponent(
-              message.mediaId
-            );
-
-
           content +=
-
-            '<a href="'
-            +
-            imageUrl
-            +
-            '" target="_blank" '
-            +
-            'rel="noopener noreferrer">'
-            +
-
-            '<img '
-            +
-            'class="chat-image" '
-            +
-            'src="'
-            +
-            imageUrl
-            +
-            '" '
-            +
-            'alt="Imagen recibida por WhatsApp" '
-            +
-            'loading="lazy" '
-            +
-            'onerror="this.style.display=\\'none\\';'
-            +
-            'this.parentElement.nextElementSibling.style.display=\\'block\\';'
-            +
-            '">'
-            +
-
-            '</a>'
-            +
-
-            '<div '
-            +
-            'class="media-placeholder" '
-            +
-            'style="display:none;">'
-            +
-            'No se pudo cargar la imagen. '
-            +
-            'Pulsa Actualizar para intentarlo nuevamente.'
-            +
-            '</div>';
-
-
-          if (
-            message.caption
-            &&
-            String(
-              message.caption
-            ).trim()
-          ) {
-
-            content +=
-
-              '<div class="image-caption">'
-              +
-
-              escapeHtml(
-                message.caption
-              )
-
-              +
-
-              '</div>';
-
-          }
-
-        }
-
-
-        // ==================================
-        // MOSTRAR TEXTO
-        // ==================================
-
-        else {
-
-
-          const text =
-            message.text
-            ||
-            "[Mensaje sin texto]";
-
-
-          content =
-
-            '<div class="message-text">'
-            +
-
+            '<div class="image-caption">' +
             escapeHtml(
-              text
-            )
-
-            +
-
+              message.caption
+            ) +
             '</div>';
-
         }
 
+      } else {
+
+        const text =
+          message.text ||
+          "[Mensaje sin texto]";
 
 
-        bubble.innerHTML =
-
-          '<div class="sender">'
-          +
-
-          escapeHtml(
-            sender
-          )
-
-          +
-
-          '</div>'
-          +
-
-          content
-          +
-
-          '<div class="message-time">'
-          +
-
-          escapeHtml(
-            formatDate(
-              message
-            )
-          )
-
-          +
-
+        content =
+          '<div class="message-text">' +
+          escapeHtml(text) +
           '</div>';
-
-
-        row.appendChild(
-          bubble
-        );
-
-
-        chat.appendChild(
-          row
-        );
-
       }
-    );
+
+
+      bubble.innerHTML =
+
+        '<div class="sender">' +
+        escapeHtml(sender) +
+        '</div>' +
+
+        content +
+
+        '<div class="message-time">' +
+        escapeHtml(
+          formatDate(message)
+        ) +
+        '</div>';
+
+
+      row.appendChild(
+        bubble
+      );
+
+
+      chat.appendChild(
+        row
+      );
+    }
+  );
 
 
   chat.scrollTop =
     chat.scrollHeight;
-
 }
 
 
-
-/* ==========================================
-   CARGAR MENSAJES
-========================================== */
 
 async function loadMessages() {
 
   try {
 
-
     const response =
       await fetch(
-
         "/.netlify/functions/whatsapp-list",
-
         {
-
-          cache:
-            "no-store",
-
-          credentials:
-            "same-origin"
-
+          cache: "no-store",
+          credentials: "same-origin"
         }
-
       );
 
 
@@ -1959,7 +1351,6 @@ async function loadMessages() {
       throw new Error(
         "No se pudieron cargar los mensajes."
       );
-
     }
 
 
@@ -1969,65 +1360,48 @@ async function loadMessages() {
 
     allMessages =
       Array.isArray(result)
-
-        ? result
-
-        : [];
+      ? result
+      : [];
 
 
     buildConversations();
 
 
     const available =
-
       Object
-        .values(
-          conversations
-        )
+        .values(conversations)
         .sort(
           function(a, b) {
 
             return (
-
               messageDate(
                 b.lastMessage
               )
-
               -
-
               messageDate(
                 a.lastMessage
               )
-
             );
-
           }
         );
 
 
     if (
-      selectedPhone
-      &&
-      !conversations[
-        selectedPhone
-      ]
+      selectedPhone &&
+      !conversations[selectedPhone]
     ) {
 
-      selectedPhone =
-        "";
-
+      selectedPhone = "";
     }
 
 
     if (
-      !selectedPhone
-      &&
+      !selectedPhone &&
       available.length > 0
     ) {
 
       selectedPhone =
         available[0].phone;
-
     }
 
 
@@ -2041,19 +1415,15 @@ async function loadMessages() {
         "lastUpdate"
       )
       .textContent =
-
         "Actualizado: "
         +
-
         new Date()
           .toLocaleTimeString(
             "es-GT"
           );
 
-
   }
   catch(error) {
-
 
     console.error(error);
 
@@ -2063,24 +1433,168 @@ async function loadMessages() {
         "conversations"
       )
       .innerHTML =
-
-        '<div class="empty">'
-        +
-        'Error cargando mensajes.'
-        +
+        '<div class="empty">' +
+        'Error cargando mensajes.' +
         '</div>';
-
   }
-
 }
 
 
 
-/* ==========================================
-   ENVIAR RESPUESTA DE TEXTO
-========================================== */
+function chooseImage() {
+
+  const status =
+    document.getElementById(
+      "sendStatus"
+    );
+
+
+  if (!selectedPhone) {
+
+    status.textContent =
+      "Selecciona un cliente primero.";
+
+    status.className =
+      "send-status error";
+
+    return;
+  }
+
+
+  document
+    .getElementById(
+      "imageInput"
+    )
+    .click();
+}
+
+
+
+function handleImageSelected(event) {
+
+  const file =
+    event.target.files &&
+    event.target.files[0];
+
+
+  if (!file) {
+    return;
+  }
+
+
+  const allowed = [
+    "image/jpeg",
+    "image/png"
+  ];
+
+
+  if (!allowed.includes(file.type)) {
+
+    alert(
+      "La imagen debe ser JPG, JPEG o PNG."
+    );
+
+    clearSelectedImage();
+
+    return;
+  }
+
+
+  const maxSize =
+    5 * 1024 * 1024;
+
+
+  if (file.size > maxSize) {
+
+    alert(
+      "La imagen no puede superar 5 MB."
+    );
+
+    clearSelectedImage();
+
+    return;
+  }
+
+
+  selectedImageFile =
+    file;
+
+
+  document
+    .getElementById(
+      "imageSelectedName"
+    )
+    .textContent =
+      "📷 " +
+      file.name;
+
+
+  document
+    .getElementById(
+      "imageSelectedBar"
+    )
+    .classList
+    .add("active");
+
+
+  document
+    .getElementById(
+      "sendStatus"
+    )
+    .textContent =
+      "Imagen lista para enviar.";
+}
+
+
+
+function clearSelectedImage() {
+
+  selectedImageFile =
+    null;
+
+
+  const input =
+    document.getElementById(
+      "imageInput"
+    );
+
+
+  if (input) {
+    input.value = "";
+  }
+
+
+  const bar =
+    document.getElementById(
+      "imageSelectedBar"
+    );
+
+
+  if (bar) {
+
+    bar
+      .classList
+      .remove("active");
+  }
+}
+
+
 
 async function sendReply() {
+
+  if (selectedImageFile) {
+
+    await sendImage();
+
+  } else {
+
+    await sendText();
+  }
+}
+
+
+
+async function sendText() {
 
   const textarea =
     document.getElementById(
@@ -2105,13 +1619,10 @@ async function sendReply() {
     status.textContent =
       "Selecciona un cliente.";
 
-
     status.className =
       "send-status error";
 
-
     return;
-
   }
 
 
@@ -2124,66 +1635,37 @@ async function sendReply() {
     status.textContent =
       "Escribe un mensaje.";
 
-
     status.className =
       "send-status error";
 
-
     return;
-
   }
 
 
-  button.disabled =
-    true;
-
+  button.disabled = true;
 
   button.textContent =
     "Enviando...";
 
 
-  status.textContent =
-    "";
-
-
   try {
-
 
     const response =
       await fetch(
-
         "/.netlify/functions/whatsapp-send",
-
         {
-
-          method:
-            "POST",
-
-          credentials:
-            "same-origin",
-
+          method: "POST",
+          credentials: "same-origin",
           headers: {
-
             "Content-Type":
               "application/json"
-
           },
-
           body:
-            JSON.stringify(
-              {
-
-                to:
-                  selectedPhone,
-
-                text:
-                  text
-
-              }
-            )
-
+            JSON.stringify({
+              to: selectedPhone,
+              text: text
+            })
         }
-
       );
 
 
@@ -2192,29 +1674,22 @@ async function sendReply() {
 
 
     if (
-      !response.ok
-      ||
+      !response.ok ||
       !result.success
     ) {
 
       throw new Error(
-
-        result.error
-        ||
+        result.error ||
         "No se pudo enviar el mensaje."
-
       );
-
     }
 
 
-    textarea.value =
-      "";
+    textarea.value = "";
 
 
     status.textContent =
       "✓ Mensaje enviado correctamente";
-
 
     status.className =
       "send-status success";
@@ -2225,19 +1700,12 @@ async function sendReply() {
       900
     );
 
-
   }
   catch(error) {
 
-
-    console.error(error);
-
-
     status.textContent =
-      "Error: "
-      +
+      "Error: " +
       error.message;
-
 
     status.className =
       "send-status error";
@@ -2245,23 +1713,166 @@ async function sendReply() {
   }
   finally {
 
-
-    button.disabled =
-      false;
-
+    button.disabled = false;
 
     button.textContent =
       "Enviar WhatsApp";
-
   }
-
 }
 
 
 
-/* ==========================================
-   INICIAR
-========================================== */
+async function sendImage() {
+
+  const textarea =
+    document.getElementById(
+      "replyText"
+    );
+
+
+  const button =
+    document.getElementById(
+      "sendButton"
+    );
+
+
+  const attachButton =
+    document.getElementById(
+      "attachButton"
+    );
+
+
+  const status =
+    document.getElementById(
+      "sendStatus"
+    );
+
+
+  if (
+    !selectedPhone ||
+    !selectedImageFile
+  ) {
+
+    return;
+  }
+
+
+  button.disabled = true;
+
+  attachButton.disabled = true;
+
+  button.textContent =
+    "Enviando imagen...";
+
+
+  status.textContent =
+    "Subiendo imagen a WhatsApp...";
+
+  status.className =
+    "send-status";
+
+
+  try {
+
+    const formData =
+      new FormData();
+
+
+    formData.append(
+      "to",
+      selectedPhone
+    );
+
+
+    formData.append(
+      "image",
+      selectedImageFile
+    );
+
+
+    const caption =
+      textarea.value.trim();
+
+
+    if (caption) {
+
+      formData.append(
+        "caption",
+        caption
+      );
+    }
+
+
+    const response =
+      await fetch(
+        "/.netlify/functions/whatsapp-send-image",
+        {
+          method: "POST",
+          credentials: "same-origin",
+          body: formData
+        }
+      );
+
+
+    const result =
+      await response.json();
+
+
+    if (
+      !response.ok ||
+      !result.success
+    ) {
+
+      throw new Error(
+        result.error ||
+        "No se pudo enviar la imagen."
+      );
+    }
+
+
+    textarea.value = "";
+
+    clearSelectedImage();
+
+
+    status.textContent =
+      "✓ Imagen enviada correctamente";
+
+    status.className =
+      "send-status success";
+
+
+    setTimeout(
+      loadMessages,
+      1000
+    );
+
+  }
+  catch(error) {
+
+    console.error(error);
+
+
+    status.textContent =
+      "Error: " +
+      error.message;
+
+    status.className =
+      "send-status error";
+
+  }
+  finally {
+
+    button.disabled = false;
+
+    attachButton.disabled = false;
+
+    button.textContent =
+      "Enviar WhatsApp";
+  }
+}
+
+
 
 loadMessages();
 
@@ -2270,7 +1881,6 @@ setInterval(
   loadMessages,
   20000
 );
-
 
 </script>
 
@@ -2285,17 +1895,12 @@ setInterval(
     html,
     {
       status: 200,
-
       headers: {
-
         "Content-Type":
           "text/html; charset=utf-8",
-
         "Cache-Control":
           "no-store"
-
       }
     }
   );
-
 };
