@@ -12,7 +12,9 @@ function isAuthorized(request) {
 
     const separator = decoded.indexOf(":");
 
-    if (separator === -1) return false;
+    if (separator === -1) {
+      return false;
+    }
 
     const user = decoded.substring(0, separator);
     const password = decoded.substring(separator + 1);
@@ -29,13 +31,17 @@ function isAuthorized(request) {
 export default async (request) => {
 
   if (!isAuthorized(request)) {
-    return new Response("Acceso restringido - Sophy Candy", {
-      status: 401,
-      headers: {
-        "WWW-Authenticate": 'Basic realm="Sophy Candy WhatsApp"',
-        "Cache-Control": "no-store"
+    return new Response(
+      "Acceso restringido - Sophy Candy",
+      {
+        status: 401,
+        headers: {
+          "WWW-Authenticate":
+            'Basic realm="Sophy Candy WhatsApp"',
+          "Cache-Control": "no-store"
+        }
       }
-    });
+    );
   }
 
   const html = `
@@ -63,41 +69,72 @@ body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   background: #e9edef;
-  color: #222;
+  color: #111b21;
 }
 
-header {
+.topbar {
   background: #075e54;
   color: white;
-  padding: 16px 24px;
+  min-height: 72px;
+  padding: 14px 24px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-header h1 {
+.topbar h1 {
   margin: 0;
-  font-size: 22px;
+  font-size: 21px;
 }
 
-header span {
-  font-size: 13px;
+.topbar small {
   opacity: .9;
 }
 
-.main {
-  max-width: 1100px;
-  margin: 22px auto;
-  padding: 0 15px;
+.business-number {
+  font-weight: bold;
 }
 
-.toolbar {
+.app {
+  width: calc(100% - 30px);
+  max-width: 1300px;
+
+  height: calc(100vh - 125px);
+  min-height: 600px;
+
+  margin: 18px auto 0;
+
+  display: grid;
+  grid-template-columns: 340px 1fr;
+
   background: white;
-  border-radius: 10px 10px 0 0;
-  padding: 14px 18px;
+
+  border-radius: 10px;
+  overflow: hidden;
+
+  box-shadow:
+    0 3px 14px rgba(0,0,0,.13);
+}
+
+
+/* ================================
+   COLUMNA DE CLIENTES
+================================ */
+
+.sidebar {
+  border-right: 1px solid #d9d9d9;
+  background: white;
+
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.sidebar-header {
+  padding: 14px 16px;
+  background: #f0f2f5;
   border-bottom: 1px solid #ddd;
 }
 
@@ -106,27 +143,151 @@ header span {
   font-weight: bold;
 }
 
+.search {
+  padding: 10px;
+  background: white;
+  border-bottom: 1px solid #eee;
+}
+
+.search input {
+  width: 100%;
+  padding: 10px 12px;
+
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+  outline: none;
+}
+
+.search input:focus {
+  border-color: #128c7e;
+}
+
+.conversations {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.conversation {
+  position: relative;
+
+  padding: 13px 15px;
+
+  border-bottom: 1px solid #eee;
+
+  cursor: pointer;
+}
+
+.conversation:hover {
+  background: #f5f6f6;
+}
+
+.conversation.active {
+  background: #e9edef;
+}
+
+.conversation-name {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.conversation-phone {
+  color: #667781;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+.conversation-preview {
+  color: #667781;
+  font-size: 12px;
+
+  margin-top: 6px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.conversation-time {
+  color: #888;
+  font-size: 10px;
+
+  margin-top: 5px;
+}
+
+
+/* ================================
+   PANEL DE CHAT
+================================ */
+
+.chat-panel {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.chat-header {
+  min-height: 68px;
+
+  padding: 12px 18px;
+
+  background: #f0f2f5;
+
+  border-bottom: 1px solid #ddd;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-name {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.chat-phone {
+  color: #667781;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
 .refresh-button {
+  border: 0;
+
   background: #128c7e;
   color: white;
-  border: 0;
+
   border-radius: 7px;
-  padding: 9px 15px;
+
+  padding: 9px 14px;
+
   font-weight: bold;
   cursor: pointer;
 }
 
-.chat {
-  background: #efeae2;
-  min-height: 500px;
-  max-height: 620px;
-  overflow-y: auto;
-  padding: 22px;
+.refresh-button:hover {
+  background: #0d766a;
 }
+
+.chat {
+  flex: 1;
+
+  background: #efeae2;
+
+  padding: 20px;
+
+  overflow-y: auto;
+}
+
+
+/* ================================
+   BURBUJAS
+================================ */
 
 .message-row {
   display: flex;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .incoming {
@@ -139,9 +300,13 @@ header span {
 
 .bubble {
   max-width: 72%;
-  padding: 10px 12px 7px;
+
+  padding: 9px 11px 6px;
+
   border-radius: 9px;
-  box-shadow: 0 1px 2px rgba(0,0,0,.12);
+
+  box-shadow:
+    0 1px 2px rgba(0,0,0,.12);
 }
 
 .incoming .bubble {
@@ -155,64 +320,104 @@ header span {
 }
 
 .sender {
-  font-size: 12px;
-  font-weight: bold;
+  font-size: 11px;
   color: #087f5b;
-  margin-bottom: 5px;
+
+  font-weight: bold;
+
+  margin-bottom: 4px;
 }
 
 .message-text {
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.4;
+
+  white-space: pre-wrap;
   word-break: break-word;
 }
 
 .message-time {
-  text-align: right;
   font-size: 10px;
   color: #667781;
+
+  text-align: right;
+
   margin-top: 5px;
 }
 
+
+/* ================================
+   ÁREA PARA RESPONDER
+================================ */
+
 .reply-area {
-  background: white;
-  padding: 15px;
-  border-radius: 0 0 10px 10px;
+  padding: 12px;
+
+  background: #f0f2f5;
+
   display: flex;
-  gap: 10px;
-  align-items: center;
+  gap: 9px;
 }
 
 .reply-area textarea {
   flex: 1;
-  min-height: 55px;
-  max-height: 120px;
-  resize: vertical;
+
+  min-height: 50px;
+  max-height: 110px;
+
+  padding: 11px 12px;
+
   border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 11px;
-  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 9px;
+
+  resize: vertical;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size: 14px;
+
+  outline: none;
+}
+
+.reply-area textarea:focus {
+  border-color: #128c7e;
 }
 
 .send-button {
+  border: 0;
+
   background: #25d366;
   color: white;
-  border: 0;
+
   border-radius: 8px;
-  padding: 13px 18px;
+
+  padding: 0 18px;
+
   font-weight: bold;
+
   cursor: pointer;
+}
+
+.send-button:hover {
+  background: #1ebe5d;
 }
 
 .send-button:disabled {
   opacity: .6;
+  cursor: wait;
 }
 
 .send-status {
-  margin: 10px 0;
-  font-size: 13px;
-  min-height: 18px;
+  background: #f0f2f5;
+
+  padding: 0 13px 8px;
+
+  min-height: 22px;
+
+  font-size: 12px;
 }
 
 .success {
@@ -225,43 +430,62 @@ header span {
   font-weight: bold;
 }
 
-.contact-info {
-  background: white;
-  padding: 12px 18px;
-  border-bottom: 1px solid #ddd;
-  font-size: 14px;
-}
-
-.contact-name {
-  font-weight: bold;
-}
-
-.contact-phone {
-  color: #666;
-  margin-top: 3px;
-}
-
-.loading,
 .empty {
+  padding: 40px 20px;
+
   text-align: center;
-  padding: 45px;
-  color: #666;
+
+  color: #667781;
 }
 
 footer {
   text-align: center;
+
+  font-size: 11px;
+
   color: #777;
-  font-size: 12px;
-  line-height: 1.6;
-  margin: 24px 0;
+
+  padding: 10px;
 }
 
-@media(max-width:700px) {
 
-  header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
+/* ================================
+   CELULAR
+================================ */
+
+@media(max-width:800px) {
+
+  .topbar {
+    padding: 11px;
+  }
+
+  .topbar h1 {
+    font-size: 17px;
+  }
+
+  .business-number {
+    font-size: 13px;
+  }
+
+  .app {
+    width: 100%;
+    margin: 0;
+
+    height: calc(100vh - 82px);
+    min-height: 600px;
+
+    border-radius: 0;
+
+    grid-template-columns:
+      150px 1fr;
+  }
+
+  .conversation {
+    padding: 10px 8px;
+  }
+
+  .conversation-preview {
+    display: none;
   }
 
   .bubble {
@@ -270,11 +494,10 @@ footer {
 
   .reply-area {
     flex-direction: column;
-    align-items: stretch;
   }
 
   .send-button {
-    width: 100%;
+    min-height: 42px;
   }
 }
 
@@ -284,127 +507,319 @@ footer {
 
 <body>
 
-<header>
 
-<div>
-  <h1>Surtimayoreo Sophy Candy</h1>
-  <span>Bandeja de WhatsApp Business API</span>
-</div>
+<div class="topbar">
 
-<div>
-  +502 3993 5344
-</div>
+  <div>
 
-</header>
+    <h1>
+      Surtimayoreo Sophy Candy
+    </h1>
 
-<div class="main">
+    <small>
+      Bandeja de WhatsApp Business API
+    </small>
 
-<div class="toolbar">
+  </div>
 
-<div>
-  Estado:
-  <span class="online">● Conectado</span>
-  <br>
-  <small id="lastUpdate"></small>
-</div>
 
-<button
-  class="refresh-button"
-  onclick="loadMessages()"
->
-Actualizar
-</button>
+  <div class="business-number">
+
+    WhatsApp +502 3993 5344
+
+  </div>
 
 </div>
 
-<div
-  id="contactInfo"
-  class="contact-info"
->
-Cargando conversación...
+
+<div class="app">
+
+
+  <!-- =============================
+       LISTA DE CLIENTES
+  ============================== -->
+
+  <aside class="sidebar">
+
+
+    <div class="sidebar-header">
+
+      Estado:
+
+      <span class="online">
+        ● Conectado
+      </span>
+
+      <br>
+
+      <small id="lastUpdate">
+        Cargando...
+      </small>
+
+    </div>
+
+
+    <div class="search">
+
+      <input
+        id="searchInput"
+        type="text"
+        placeholder="Buscar cliente..."
+        oninput="renderConversationList()"
+      >
+
+    </div>
+
+
+    <div
+      id="conversations"
+      class="conversations"
+    >
+
+      <div class="empty">
+        Cargando clientes...
+      </div>
+
+    </div>
+
+
+  </aside>
+
+
+  <!-- =============================
+       CONVERSACIÓN
+  ============================== -->
+
+  <section class="chat-panel">
+
+
+    <div class="chat-header">
+
+
+      <div>
+
+        <div
+          id="chatName"
+          class="chat-name"
+        >
+
+          Selecciona un cliente
+
+        </div>
+
+
+        <div
+          id="chatPhone"
+          class="chat-phone"
+        ></div>
+
+      </div>
+
+
+      <button
+        class="refresh-button"
+        onclick="loadMessages()"
+      >
+
+        Actualizar
+
+      </button>
+
+
+    </div>
+
+
+    <div
+      id="chat"
+      class="chat"
+    >
+
+      <div class="empty">
+
+        Selecciona una conversación.
+
+      </div>
+
+    </div>
+
+
+    <div class="reply-area">
+
+
+      <textarea
+        id="replyText"
+        maxlength="4096"
+        placeholder="Escribe una respuesta para el cliente..."
+      ></textarea>
+
+
+      <button
+        id="sendButton"
+        class="send-button"
+        onclick="sendReply()"
+      >
+
+        Enviar WhatsApp
+
+      </button>
+
+
+    </div>
+
+
+    <div
+      id="sendStatus"
+      class="send-status"
+    ></div>
+
+
+  </section>
+
+
 </div>
 
-<div
-  id="chat"
-  class="chat"
->
-<div class="loading">
-Cargando mensajes...
-</div>
-</div>
-
-<div class="reply-area">
-
-<textarea
-  id="replyText"
-  maxlength="4096"
-  placeholder="Escribe una respuesta para el cliente..."
-></textarea>
-
-<button
-  id="sendButton"
-  class="send-button"
-  onclick="sendReply()"
->
-Enviar WhatsApp
-</button>
-
-</div>
-
-<div
-  id="sendStatus"
-  class="send-status"
-></div>
 
 <footer>
 
-Los mensajes se conservan durante un máximo de
-<strong>90 días</strong>.
+  Los mensajes se conservan durante un máximo de
+  <strong>90 días</strong>
 
-<br>
+  ·
 
-Soporte y mantenimiento WhatsApp API:
-<strong>Q500.00 mensuales.</strong>
+  Soporte WhatsApp API
+  <strong>Q500.00 mensuales</strong>
 
-<br>
+  ·
 
-Los cargos de Meta/WhatsApp y servicios externos
-no están incluidos.
+  Cargos de Meta/WhatsApp no incluidos
 
 </footer>
 
-</div>
 
 <script>
 
-let currentPhone = "";
-let currentName = "Cliente";
+let allMessages = [];
+
+let conversations = {};
+
+let selectedPhone = "";
+
+
+// ID REAL DEL NÚMERO DE SOPHY CANDY
+const SOPHY_PHONE_NUMBER_ID =
+  "1273794675819369";
+
 
 
 function escapeHtml(value) {
 
-  if (value === null || value === undefined) {
+  if (
+    value === null ||
+    value === undefined
+  ) {
+
     return "";
+
   }
 
   return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
 }
 
 
-function formatDate(dateString) {
 
-  if (!dateString) return "";
+function messageDate(message) {
 
-  const date = new Date(dateString);
+  if (message.receivedAt) {
 
-  if (Number.isNaN(date.getTime())) {
-    return "";
+    const date =
+      new Date(
+        message.receivedAt
+      );
+
+    if (
+      !Number.isNaN(
+        date.getTime()
+      )
+    ) {
+
+      return date;
+
+    }
+
   }
+
+
+  if (message.timestamp) {
+
+    const number =
+      Number(
+        message.timestamp
+      );
+
+
+    if (
+      !Number.isNaN(number)
+    ) {
+
+      return new Date(
+        number * 1000
+      );
+
+    }
+
+  }
+
+
+  return new Date(0);
+
+}
+
+
+
+function formatDate(message) {
+
+  const date =
+    messageDate(message);
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    ) ||
+
+    date.getTime() === 0
+  ) {
+
+    return "";
+
+  }
+
 
   return date.toLocaleString(
     "es-GT",
@@ -413,214 +828,800 @@ function formatDate(dateString) {
       timeStyle: "short"
     }
   );
+
 }
+
+
+
+function getMessagePhone(message) {
+
+  let value = "";
+
+
+  if (
+    message.direction ===
+    "outgoing"
+  ) {
+
+    value =
+      message.to ||
+      message.from ||
+      "";
+
+  }
+  else {
+
+    value =
+      message.from ||
+      "";
+
+  }
+
+
+  return String(value)
+    .replace(
+      /\\D/g,
+      ""
+    );
+
+}
+
+
+
+function isRealSophyMessage(
+  message
+) {
+
+  // Mensajes enviados desde nuestra bandeja
+  if (
+    message.direction ===
+    "outgoing"
+  ) {
+
+    return true;
+
+  }
+
+
+  // Mensajes reales entrantes
+  if (
+    String(
+      message.phoneNumberId ||
+      ""
+    ) ===
+    SOPHY_PHONE_NUMBER_ID
+  ) {
+
+    return true;
+
+  }
+
+
+  // Compatibilidad con registros reales
+  // que indiquen el número visible.
+  const display =
+    String(
+      message.displayPhoneNumber ||
+      ""
+    )
+    .replace(
+      /\\D/g,
+      ""
+    );
+
+
+  if (
+    display ===
+    "50239935344"
+  ) {
+
+    return true;
+
+  }
+
+
+  // Si no cumple lo anterior,
+  // probablemente es la prueba
+  // automática de Meta.
+  return false;
+
+}
+
+
+
+function buildConversations() {
+
+  conversations = {};
+
+
+  const realMessages =
+    allMessages.filter(
+      isRealSophyMessage
+    );
+
+
+  realMessages.forEach(
+    function(message) {
+
+
+      const phone =
+        getMessagePhone(
+          message
+        );
+
+
+      if (!phone) {
+
+        return;
+
+      }
+
+
+      if (
+        !conversations[phone]
+      ) {
+
+        conversations[phone] = {
+
+          phone: phone,
+
+          name: "Cliente",
+
+          messages: [],
+
+          lastMessage: null
+
+        };
+
+      }
+
+
+      const conversation =
+        conversations[phone];
+
+
+      conversation
+        .messages
+        .push(
+          message
+        );
+
+
+      if (
+        message.direction !==
+        "outgoing"
+        &&
+        message.name
+      ) {
+
+        conversation.name =
+          message.name;
+
+      }
+
+
+      if (
+        !conversation.lastMessage
+        ||
+        messageDate(message) >
+        messageDate(
+          conversation
+            .lastMessage
+        )
+      ) {
+
+        conversation
+          .lastMessage =
+          message;
+
+      }
+
+
+    }
+  );
+
+
+  Object
+    .values(conversations)
+    .forEach(
+      function(conversation) {
+
+
+        conversation
+          .messages
+          .sort(
+            function(a,b) {
+
+              return (
+                messageDate(a) -
+                messageDate(b)
+              );
+
+            }
+          );
+
+
+      }
+    );
+
+}
+
+
+
+function renderConversationList() {
+
+  const container =
+    document.getElementById(
+      "conversations"
+    );
+
+
+  const search =
+    document
+      .getElementById(
+        "searchInput"
+      )
+      .value
+      .trim()
+      .toLowerCase();
+
+
+  let list =
+    Object.values(
+      conversations
+    );
+
+
+  list.sort(
+    function(a,b) {
+
+      return (
+        messageDate(
+          b.lastMessage
+        )
+        -
+        messageDate(
+          a.lastMessage
+        )
+      );
+
+    }
+  );
+
+
+  if (search) {
+
+    list =
+      list.filter(
+        function(conversation) {
+
+          return (
+
+            conversation
+              .name
+              .toLowerCase()
+              .includes(search)
+
+            ||
+
+            conversation
+              .phone
+              .includes(search)
+
+          );
+
+        }
+      );
+
+  }
+
+
+  if (
+    list.length === 0
+  ) {
+
+    container.innerHTML =
+      '<div class="empty">' +
+      'No hay conversaciones.' +
+      '</div>';
+
+    return;
+
+  }
+
+
+  container.innerHTML = "";
+
+
+  list.forEach(
+    function(conversation) {
+
+
+      const last =
+        conversation.lastMessage ||
+        {};
+
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+
+      item.className =
+        "conversation" +
+        (
+          conversation.phone ===
+          selectedPhone
+
+          ? " active"
+
+          : ""
+        );
+
+
+      item.onclick =
+        function() {
+
+          selectConversation(
+            conversation.phone
+          );
+
+        };
+
+
+      let preview =
+        last.text ||
+        "[Mensaje]";
+
+
+      if (
+        last.direction ===
+        "outgoing"
+      ) {
+
+        preview =
+          "Tú: " +
+          preview;
+
+      }
+
+
+      item.innerHTML =
+
+        '<div class="conversation-name">' +
+
+          escapeHtml(
+            conversation.name
+          )
+
+        + '</div>' +
+
+
+        '<div class="conversation-phone">+' +
+
+          escapeHtml(
+            conversation.phone
+          )
+
+        + '</div>' +
+
+
+        '<div class="conversation-preview">' +
+
+          escapeHtml(
+            preview
+          )
+
+        + '</div>' +
+
+
+        '<div class="conversation-time">' +
+
+          escapeHtml(
+            formatDate(last)
+          )
+
+        + '</div>';
+
+
+      container
+        .appendChild(
+          item
+        );
+
+
+    }
+  );
+
+}
+
+
+
+function selectConversation(
+  phone
+) {
+
+  selectedPhone =
+    phone;
+
+
+  document
+    .getElementById(
+      "sendStatus"
+    )
+    .textContent = "";
+
+
+  renderConversationList();
+
+  renderChat();
+
+}
+
+
+
+function renderChat() {
+
+  const chat =
+    document.getElementById(
+      "chat"
+    );
+
+
+  if (
+    !selectedPhone
+    ||
+    !conversations[
+      selectedPhone
+    ]
+  ) {
+
+    document
+      .getElementById(
+        "chatName"
+      )
+      .textContent =
+        "Selecciona un cliente";
+
+
+    document
+      .getElementById(
+        "chatPhone"
+      )
+      .textContent = "";
+
+
+    chat.innerHTML =
+      '<div class="empty">' +
+      'Selecciona una conversación.' +
+      '</div>';
+
+
+    return;
+
+  }
+
+
+  const conversation =
+    conversations[
+      selectedPhone
+    ];
+
+
+  document
+    .getElementById(
+      "chatName"
+    )
+    .textContent =
+      conversation.name;
+
+
+  document
+    .getElementById(
+      "chatPhone"
+    )
+    .textContent =
+      "+" +
+      conversation.phone;
+
+
+  chat.innerHTML = "";
+
+
+  conversation
+    .messages
+    .forEach(
+      function(message) {
+
+
+        const outgoing =
+          message.direction ===
+          "outgoing";
+
+
+        const row =
+          document.createElement(
+            "div"
+          );
+
+
+        row.className =
+          "message-row " +
+          (
+            outgoing
+
+            ? "outgoing"
+
+            : "incoming"
+          );
+
+
+        const bubble =
+          document.createElement(
+            "div"
+          );
+
+
+        bubble.className =
+          "bubble";
+
+
+        const sender =
+          outgoing
+
+          ? "Sophy Candy"
+
+          : conversation.name;
+
+
+        const text =
+          message.text ||
+          "[Mensaje sin texto]";
+
+
+        bubble.innerHTML =
+
+          '<div class="sender">' +
+
+            escapeHtml(
+              sender
+            )
+
+          + '</div>' +
+
+
+          '<div class="message-text">' +
+
+            escapeHtml(
+              text
+            )
+
+          + '</div>' +
+
+
+          '<div class="message-time">' +
+
+            escapeHtml(
+              formatDate(
+                message
+              )
+            )
+
+          + '</div>';
+
+
+        row.appendChild(
+          bubble
+        );
+
+
+        chat.appendChild(
+          row
+        );
+
+
+      }
+    );
+
+
+  chat.scrollTop =
+    chat.scrollHeight;
+
+}
+
 
 
 async function loadMessages() {
 
-  const chat =
-    document.getElementById("chat");
-
   try {
 
-    const response = await fetch(
-      "/.netlify/functions/whatsapp-list",
-      {
-        cache: "no-store",
-        credentials: "same-origin"
-      }
-    );
+
+    const response =
+      await fetch(
+
+        "/.netlify/functions/whatsapp-list",
+
+        {
+
+          cache:
+            "no-store",
+
+          credentials:
+            "same-origin"
+
+        }
+
+      );
+
 
     if (!response.ok) {
+
       throw new Error(
         "No se pudieron cargar los mensajes."
       );
+
     }
 
-    const messages =
+
+    const result =
       await response.json();
 
+
+    allMessages =
+      Array.isArray(result)
+
+      ? result
+
+      : [];
+
+
+    buildConversations();
+
+
+    const available =
+      Object
+        .values(
+          conversations
+        )
+        .sort(
+          function(a,b) {
+
+            return (
+
+              messageDate(
+                b.lastMessage
+              )
+
+              -
+
+              messageDate(
+                a.lastMessage
+              )
+
+            );
+
+          }
+        );
+
+
     if (
-      !Array.isArray(messages) ||
-      messages.length === 0
+      selectedPhone
+      &&
+      !conversations[
+        selectedPhone
+      ]
     ) {
 
-      chat.innerHTML =
-        '<div class="empty">No hay mensajes.</div>';
+      selectedPhone = "";
 
-      return;
     }
 
-    // Orden cronológico:
-    // mensajes antiguos primero.
-    messages.sort(function(a, b) {
 
-      return (
-        new Date(a.receivedAt).getTime() -
-        new Date(b.receivedAt).getTime()
-      );
-    });
+    if (
+      !selectedPhone
+      &&
+      available.length > 0
+    ) {
 
+      selectedPhone =
+        available[0].phone;
 
-    // Encontrar el nombre y teléfono del cliente
-    const incomingMessage =
-      messages.find(function(message) {
-        return message.direction !== "outgoing";
-      });
-
-
-    if (incomingMessage) {
-
-      currentPhone =
-        String(incomingMessage.from || "")
-          .replace(/\\D/g, "");
-
-      currentName =
-        incomingMessage.name ||
-        "Cliente";
     }
-    else {
 
-      const first =
-        messages[0];
 
-      currentPhone =
-        String(first.from || first.to || "")
-          .replace(/\\D/g, "");
-    }
+    renderConversationList();
+
+    renderChat();
 
 
     document
-      .getElementById("contactInfo")
-      .innerHTML =
-        '<div class="contact-name">' +
-        escapeHtml(currentName) +
-        '</div>' +
-        '<div class="contact-phone">+' +
-        escapeHtml(currentPhone) +
-        '</div>';
-
-
-    chat.innerHTML = "";
-
-
-    messages.forEach(function(message) {
-
-      const outgoing =
-        message.direction === "outgoing";
-
-      const row =
-        document.createElement("div");
-
-      row.className =
-        "message-row " +
-        (outgoing ? "outgoing" : "incoming");
-
-
-      const bubble =
-        document.createElement("div");
-
-      bubble.className = "bubble";
-
-
-      const sender =
-        outgoing
-          ? "Sophy Candy"
-          : (message.name || currentName);
-
-
-      const text =
-        message.text ||
-        "[Mensaje sin texto]";
-
-
-      bubble.innerHTML =
-        '<div class="sender">' +
-        escapeHtml(sender) +
-        '</div>' +
-
-        '<div class="message-text">' +
-        escapeHtml(text) +
-        '</div>' +
-
-        '<div class="message-time">' +
-        escapeHtml(
-          formatDate(
-            message.receivedAt ||
-            message.timestamp
-          )
-        ) +
-        '</div>';
-
-
-      row.appendChild(bubble);
-
-      chat.appendChild(row);
-
-    });
-
-
-    document
-      .getElementById("lastUpdate")
+      .getElementById(
+        "lastUpdate"
+      )
       .textContent =
-        "Última actualización: " +
+
+        "Actualizado: " +
+
         new Date()
-          .toLocaleTimeString("es-GT");
+          .toLocaleTimeString(
+            "es-GT"
+          );
 
-
-    // Llevar la vista al último mensaje
-    chat.scrollTop =
-      chat.scrollHeight;
 
   }
-  catch (error) {
+  catch(error) {
 
-    console.error(error);
 
-    chat.innerHTML =
-      '<div class="empty">' +
-      'No se pudieron cargar los mensajes.' +
-      '</div>';
+    console.error(
+      error
+    );
+
+
+    document
+      .getElementById(
+        "conversations"
+      )
+      .innerHTML =
+
+        '<div class="empty">' +
+        'Error cargando mensajes.' +
+        '</div>';
+
+
   }
+
 }
+
 
 
 async function sendReply() {
 
   const textarea =
-    document.getElementById("replyText");
+    document.getElementById(
+      "replyText"
+    );
+
 
   const button =
-    document.getElementById("sendButton");
+    document.getElementById(
+      "sendButton"
+    );
+
 
   const status =
-    document.getElementById("sendStatus");
+    document.getElementById(
+      "sendStatus"
+    );
+
+
+  if (!selectedPhone) {
+
+    status.textContent =
+      "Selecciona un cliente.";
+
+    status.className =
+      "send-status error";
+
+    return;
+
+  }
+
 
   const text =
     textarea.value.trim();
 
 
-  if (!currentPhone) {
-
-    status.textContent =
-      "No se encontró el número del cliente.";
-
-    status.className =
-      "send-status error";
-
-    return;
-  }
-
-
   if (!text) {
 
     status.textContent =
-      "Escribe un mensaje antes de enviarlo.";
+      "Escribe un mensaje.";
 
     status.className =
       "send-status error";
 
     return;
+
   }
 
 
@@ -629,29 +1630,49 @@ async function sendReply() {
   button.textContent =
     "Enviando...";
 
+
   status.textContent = "";
 
 
   try {
 
-    const response = await fetch(
-      "/.netlify/functions/whatsapp-send",
-      {
-        method: "POST",
 
-        credentials: "same-origin",
+    const response =
+      await fetch(
 
-        headers: {
-          "Content-Type":
-            "application/json"
-        },
+        "/.netlify/functions/whatsapp-send",
 
-        body: JSON.stringify({
-          to: currentPhone,
-          text: text
-        })
-      }
-    );
+        {
+
+          method:
+            "POST",
+
+          credentials:
+            "same-origin",
+
+          headers: {
+
+            "Content-Type":
+              "application/json"
+
+          },
+
+          body:
+            JSON.stringify(
+              {
+
+                to:
+                  selectedPhone,
+
+                text:
+                  text
+
+              }
+            )
+
+        }
+
+      );
 
 
     const result =
@@ -659,14 +1680,19 @@ async function sendReply() {
 
 
     if (
-      !response.ok ||
+      !response.ok
+      ||
       !result.success
     ) {
 
       throw new Error(
-        result.error ||
+
+        result.error
+        ||
         "No se pudo enviar el mensaje."
+
       );
+
     }
 
 
@@ -676,50 +1702,67 @@ async function sendReply() {
     status.textContent =
       "✓ Mensaje enviado correctamente";
 
+
     status.className =
       "send-status success";
 
 
-    // Esperamos un momento para que
-    // el mensaje guardado aparezca.
     setTimeout(
       loadMessages,
-      1000
+      900
     );
 
-  }
-  catch (error) {
 
-    console.error(error);
+  }
+  catch(error) {
+
+
+    console.error(
+      error
+    );
+
 
     status.textContent =
       "Error: " +
       error.message;
 
+
     status.className =
       "send-status error";
+
+
   }
   finally {
 
+
     button.disabled = false;
+
 
     button.textContent =
       "Enviar WhatsApp";
+
+
   }
+
 }
 
+
+
+// CARGA INICIAL
 
 loadMessages();
 
 
-// Actualizar automáticamente
-// cada 20 segundos
+// ACTUALIZACIÓN AUTOMÁTICA
+// CADA 20 SEGUNDOS
+
 setInterval(
   loadMessages,
   20000
 );
 
 </script>
+
 
 </body>
 
@@ -732,11 +1775,13 @@ setInterval(
       status: 200,
 
       headers: {
+
         "Content-Type":
           "text/html; charset=utf-8",
 
         "Cache-Control":
           "no-store"
+
       }
     }
   );
