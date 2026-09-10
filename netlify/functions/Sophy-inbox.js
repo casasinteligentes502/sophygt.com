@@ -72,20 +72,28 @@ export default async (request) => {
   box-sizing: border-box;
 }
 
+html,
+body {
+  height: 100%;
+}
+
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   background: #e9edef;
   color: #111b21;
+  overflow: hidden;
 }
 
 
-/* CABECERA */
+/* =====================================
+   CABECERA
+===================================== */
 
 .topbar {
   background: #075e54;
   color: white;
-  min-height: 72px;
+  height: 78px;
   padding: 14px 24px;
   display: flex;
   justify-content: space-between;
@@ -106,402 +114,688 @@ body {
 }
 
 
-/* CONTENEDOR */
+/* =====================================
+   CONTENEDOR PRINCIPAL
+===================================== */
 
 .app {
   width: calc(100% - 30px);
   max-width: 1300px;
+
   height: calc(100vh - 125px);
-  min-height: 600px;
+
   margin: 18px auto 0;
+
   display: grid;
   grid-template-columns: 340px 1fr;
+
   background: white;
+
   border-radius: 10px;
+
   overflow: hidden;
-  box-shadow: 0 3px 14px rgba(0,0,0,.13);
+
+  box-shadow:
+    0 3px 14px
+    rgba(0,0,0,.13);
+
+  min-height: 0;
 }
 
 
-/* PANEL IZQUIERDO */
+/* =====================================
+   PANEL IZQUIERDO
+===================================== */
 
 .sidebar {
   border-right: 1px solid #d9d9d9;
+
   background: white;
+
   display: flex;
   flex-direction: column;
+
   min-width: 0;
+  min-height: 0;
+
+  overflow: hidden;
 }
+
 
 .sidebar-header {
   padding: 14px 16px;
+
   background: #f0f2f5;
+
   border-bottom: 1px solid #ddd;
+
+  flex-shrink: 0;
 }
+
 
 .online {
   color: #128c7e;
   font-weight: bold;
 }
 
+
 .search {
   padding: 10px;
+
   border-bottom: 1px solid #eee;
+
+  flex-shrink: 0;
 }
+
 
 .search input {
   width: 100%;
+
   padding: 10px 12px;
+
   border: 1px solid #ddd;
+
   border-radius: 8px;
+
   outline: none;
 }
+
 
 .search input:focus {
   border-color: #128c7e;
 }
 
+
 .conversations {
   flex: 1;
+
+  min-height: 0;
+
   overflow-y: auto;
+
+  overscroll-behavior: contain;
 }
+
 
 .conversation {
   padding: 13px 15px;
+
   border-bottom: 1px solid #eee;
+
   cursor: pointer;
 }
+
 
 .conversation:hover {
   background: #f5f6f6;
 }
 
+
 .conversation.active {
   background: #e9edef;
 }
 
+
 .conversation-name {
   font-weight: bold;
+
   font-size: 14px;
 }
 
+
 .conversation-phone {
   color: #667781;
+
   font-size: 12px;
+
   margin-top: 3px;
 }
 
+
 .conversation-preview {
   color: #667781;
+
   font-size: 12px;
+
   margin-top: 6px;
+
   white-space: nowrap;
+
   overflow: hidden;
+
   text-overflow: ellipsis;
 }
 
+
 .conversation-time {
   color: #888;
+
   font-size: 10px;
+
   margin-top: 5px;
 }
 
 
-/* PANEL DERECHO */
+/* =====================================
+   PANEL DERECHO
+===================================== */
 
 .chat-panel {
   display: flex;
+
   flex-direction: column;
+
   min-width: 0;
+
+  min-height: 0;
+
+  overflow: hidden;
 }
 
+
 .chat-header {
-  min-height: 68px;
+  height: 68px;
+
   padding: 12px 18px;
+
   background: #f0f2f5;
+
   border-bottom: 1px solid #ddd;
+
   display: flex;
+
   justify-content: space-between;
+
   align-items: center;
+
+  flex-shrink: 0;
 }
+
 
 .chat-name {
   font-weight: bold;
+
   font-size: 16px;
 }
 
+
 .chat-phone {
   color: #667781;
+
   font-size: 12px;
+
   margin-top: 3px;
 }
 
+
 .refresh-button {
   border: 0;
+
   background: #128c7e;
+
   color: white;
+
   border-radius: 7px;
+
   padding: 9px 14px;
+
   font-weight: bold;
+
   cursor: pointer;
 }
 
 
-/* CHAT */
+.refresh-button:hover {
+  background: #0d766a;
+}
+
+
+/* =====================================
+   ÁREA DEL CHAT
+===================================== */
 
 .chat {
-  flex: 1;
+  flex: 1 1 auto;
+
+  min-height: 0;
+
   background: #efeae2;
+
   padding: 20px;
+
   overflow-y: auto;
+
+  overflow-x: hidden;
+
+  overscroll-behavior: contain;
+
+  scroll-behavior: smooth;
 }
+
 
 .message-row {
   display: flex;
+
   margin-bottom: 10px;
 }
+
 
 .incoming {
   justify-content: flex-start;
 }
 
+
 .outgoing {
   justify-content: flex-end;
 }
 
+
 .bubble {
   max-width: 72%;
+
   padding: 9px 11px 6px;
+
   border-radius: 9px;
-  box-shadow: 0 1px 2px rgba(0,0,0,.12);
+
+  box-shadow:
+    0 1px 2px
+    rgba(0,0,0,.12);
+
+  overflow-wrap: anywhere;
 }
+
 
 .incoming .bubble {
   background: white;
 }
 
+
 .outgoing .bubble {
   background: #d9fdd3;
 }
 
+
 .sender {
   font-size: 11px;
+
   color: #087f5b;
+
   font-weight: bold;
+
   margin-bottom: 4px;
 }
+
 
 .message-text {
   font-size: 14px;
+
   line-height: 1.4;
+
   white-space: pre-wrap;
+
   word-break: break-word;
 }
+
 
 .message-time {
   font-size: 10px;
+
   color: #667781;
+
   text-align: right;
+
   margin-top: 5px;
 }
 
 
-/* IMÁGENES */
+/* =====================================
+   IMÁGENES
+===================================== */
 
 .chat-image {
   display: block;
+
   width: 100%;
+
   max-width: 320px;
-  max-height: 420px;
+
+  max-height: 380px;
+
   object-fit: contain;
+
   border-radius: 8px;
+
   margin-bottom: 7px;
+
   cursor: pointer;
+
   background: #f5f5f5;
 }
 
+
 .image-caption {
   margin-top: 5px;
+
   font-size: 14px;
+
   line-height: 1.4;
+
   white-space: pre-wrap;
+
   word-break: break-word;
 }
 
 
-/* AUDIO */
+/* =====================================
+   AUDIO
+===================================== */
 
 .chat-audio {
   display: block;
+
   width: 320px;
+
   max-width: 100%;
-  margin-top: 4px;
-  margin-bottom: 4px;
+
+  margin-top: 6px;
+
+  margin-bottom: 5px;
 }
 
 
-/* VIDEO */
+/* =====================================
+   VIDEO
+===================================== */
 
 .chat-video {
   display: block;
+
   width: 100%;
+
   max-width: 420px;
-  max-height: 420px;
+
+  max-height: 380px;
+
   border-radius: 8px;
+
   background: #000;
+
   margin-bottom: 7px;
 }
 
+
 .video-caption {
   margin-top: 5px;
+
   font-size: 14px;
+
   line-height: 1.4;
+
   white-space: pre-wrap;
+
   word-break: break-word;
 }
 
 
-/* IMAGEN SELECCIONADA */
+/* =====================================
+   IMAGEN SELECCIONADA PARA ENVIAR
+===================================== */
 
 .image-selected-bar {
   display: none;
+
   background: #e9edef;
+
   padding: 8px 14px;
+
   border-top: 1px solid #ddd;
+
   font-size: 13px;
+
+  flex-shrink: 0;
 }
+
 
 .image-selected-bar.active {
   display: flex;
+
   justify-content: space-between;
+
   align-items: center;
 }
 
+
 .remove-image {
   border: 0;
+
   background: transparent;
+
   color: #c92a2a;
+
   font-size: 20px;
+
   font-weight: bold;
+
   cursor: pointer;
 }
 
 
-/* RESPUESTA */
+/* =====================================
+   ÁREA DE RESPUESTA
+===================================== */
 
 .reply-area {
   padding: 12px;
+
   background: #f0f2f5;
+
   display: flex;
+
   gap: 9px;
+
+  flex-shrink: 0;
 }
+
 
 .reply-area textarea {
   flex: 1;
+
   min-height: 50px;
-  max-height: 110px;
+
+  max-height: 90px;
+
   padding: 11px 12px;
+
   border: 1px solid #ccc;
+
   border-radius: 9px;
+
   resize: vertical;
+
   font-family: Arial, Helvetica, sans-serif;
+
   font-size: 14px;
+
   outline: none;
 }
 
+
+.reply-area textarea:focus {
+  border-color: #128c7e;
+}
+
+
+/* BOTÓN IMAGEN */
+
 .attach-button {
   border: 0;
+
   background: #54656f;
+
   color: white;
+
   border-radius: 8px;
+
   padding: 0 16px;
+
   font-weight: bold;
+
   cursor: pointer;
+
   min-width: 105px;
 }
+
 
 .attach-button:hover {
   background: #3e4b52;
 }
 
+
+/* BOTÓN ENVIAR */
+
 .send-button {
   border: 0;
+
   background: #25d366;
+
   color: white;
+
   border-radius: 8px;
+
   padding: 0 18px;
+
   font-weight: bold;
+
   cursor: pointer;
 }
+
 
 .send-button:hover {
   background: #1ebe5d;
 }
 
+
 .send-button:disabled,
 .attach-button:disabled {
   opacity: .6;
+
   cursor: wait;
 }
 
+
 .send-status {
   background: #f0f2f5;
+
   padding: 0 13px 8px;
+
   min-height: 22px;
+
   font-size: 12px;
+
+  flex-shrink: 0;
 }
+
 
 .success {
   color: #087f5b;
+
   font-weight: bold;
 }
+
 
 .error {
   color: #c92a2a;
+
   font-weight: bold;
 }
 
+
 .empty {
   padding: 40px 20px;
+
   text-align: center;
+
   color: #667781;
 }
 
+
+/* =====================================
+   PIE
+===================================== */
+
 footer {
+  height: 29px;
+
   text-align: center;
+
   font-size: 11px;
+
   color: #777;
-  padding: 10px;
+
+  padding: 8px 10px;
 }
 
 
-/* CELULAR */
+/* =====================================
+   CELULAR
+===================================== */
 
 @media(max-width:800px) {
 
+  body {
+    overflow: hidden;
+  }
+
+
   .topbar {
+    height: 72px;
+
     padding: 11px;
   }
+
 
   .topbar h1 {
     font-size: 17px;
   }
 
+
   .business-number {
-    font-size: 13px;
+    font-size: 12px;
   }
+
 
   .app {
     width: 100%;
+
     margin: 0;
-    height: calc(100vh - 82px);
+
+    height: calc(100vh - 101px);
+
     border-radius: 0;
+
     grid-template-columns: 150px 1fr;
   }
 
-  .bubble {
-    max-width: 90%;
+
+  .conversation {
+    padding: 10px 8px;
   }
+
+
+  .conversation-preview {
+    display: none;
+  }
+
+
+  .bubble {
+    max-width: 92%;
+  }
+
+
+  .chat {
+    padding: 10px;
+  }
+
 
   .chat-image,
   .chat-video,
@@ -509,19 +803,26 @@ footer {
     max-width: 100%;
   }
 
+
   .reply-area {
     flex-wrap: wrap;
+
+    padding: 8px;
   }
+
 
   .reply-area textarea {
     flex-basis: 100%;
   }
 
+
   .attach-button,
   .send-button {
     min-height: 42px;
+
     flex: 1;
   }
+
 }
 
 </style>
@@ -535,9 +836,17 @@ footer {
 <div class="topbar">
 
   <div>
-    <h1>Surtimayoreo Sophy Candy</h1>
-    <small>Bandeja de WhatsApp Business API</small>
+
+    <h1>
+      Surtimayoreo Sophy Candy
+    </h1>
+
+    <small>
+      Bandeja de WhatsApp Business API
+    </small>
+
   </div>
+
 
   <div class="business-number">
     WhatsApp +502 3993 5344
@@ -546,10 +855,12 @@ footer {
 </div>
 
 
+
 <div class="app">
 
 
 <aside class="sidebar">
+
 
   <div class="sidebar-header">
 
@@ -591,6 +902,7 @@ footer {
 
   </div>
 
+
 </aside>
 
 
@@ -627,6 +939,7 @@ footer {
   </div>
 
 
+
   <div
     id="chat"
     class="chat"
@@ -637,6 +950,7 @@ footer {
     </div>
 
   </div>
+
 
 
   <div
@@ -657,7 +971,9 @@ footer {
   </div>
 
 
+
   <div class="reply-area">
+
 
     <input
       id="imageInput"
@@ -692,6 +1008,7 @@ footer {
       Enviar WhatsApp
     </button>
 
+
   </div>
 
 
@@ -707,14 +1024,17 @@ footer {
 </div>
 
 
+
 <footer>
 
 Los mensajes se conservan durante un máximo de
+
 <strong>90 días</strong>
 
 ·
 
 Soporte WhatsApp API
+
 <strong>Q500.00 mensuales</strong>
 
 ·
@@ -742,6 +1062,10 @@ const SOPHY_PHONE_NUMBER_ID =
 
 
 
+/* =====================================
+   SEGURIDAD DE TEXTO
+===================================== */
+
 function escapeHtml(value) {
 
   if (
@@ -760,6 +1084,10 @@ function escapeHtml(value) {
 }
 
 
+
+/* =====================================
+   FECHAS
+===================================== */
 
 function messageDate(message) {
 
@@ -795,6 +1123,7 @@ function formatDate(message) {
   const date =
     messageDate(message);
 
+
   if (
     Number.isNaN(date.getTime()) ||
     date.getTime() === 0
@@ -814,9 +1143,14 @@ function formatDate(message) {
 
 
 
+/* =====================================
+   TELÉFONO CLIENTE
+===================================== */
+
 function getMessagePhone(message) {
 
   let value = "";
+
 
   if (
     message.direction ===
@@ -841,6 +1175,10 @@ function getMessagePhone(message) {
 }
 
 
+
+/* =====================================
+   FILTRAR MENSAJES REALES
+===================================== */
 
 function isRealSophyMessage(message) {
 
@@ -877,6 +1215,10 @@ function isRealSophyMessage(message) {
 }
 
 
+
+/* =====================================
+   CREAR CONVERSACIONES
+===================================== */
 
 function buildConversations() {
 
@@ -970,6 +1312,10 @@ function buildConversations() {
 }
 
 
+
+/* =====================================
+   LISTA DE CLIENTES
+===================================== */
 
 function renderConversationList() {
 
@@ -1085,27 +1431,38 @@ function renderConversationList() {
         "[Mensaje]";
 
 
-      if (last.type === "image") {
+      if (
+        last.type === "image"
+      ) {
 
-        preview = "📷 Imagen";
+        preview =
+          "📷 Imagen";
 
         if (last.caption) {
+
           preview +=
             " - " +
             last.caption;
         }
 
-      } else if (last.type === "audio") {
+
+      } else if (
+        last.type === "audio"
+      ) {
 
         preview =
           "🎤 Nota de voz";
 
-      } else if (last.type === "video") {
+
+      } else if (
+        last.type === "video"
+      ) {
 
         preview =
           "🎬 Video";
 
         if (last.caption) {
+
           preview +=
             " - " +
             last.caption;
@@ -1127,19 +1484,27 @@ function renderConversationList() {
       item.innerHTML =
 
         '<div class="conversation-name">' +
-        escapeHtml(conversation.name) +
+        escapeHtml(
+          conversation.name
+        ) +
         '</div>' +
 
         '<div class="conversation-phone">+' +
-        escapeHtml(conversation.phone) +
+        escapeHtml(
+          conversation.phone
+        ) +
         '</div>' +
 
         '<div class="conversation-preview">' +
-        escapeHtml(preview) +
+        escapeHtml(
+          preview
+        ) +
         '</div>' +
 
         '<div class="conversation-time">' +
-        escapeHtml(formatDate(last)) +
+        escapeHtml(
+          formatDate(last)
+        ) +
         '</div>';
 
 
@@ -1151,6 +1516,10 @@ function renderConversationList() {
 }
 
 
+
+/* =====================================
+   SELECCIONAR CLIENTE
+===================================== */
 
 function selectConversation(phone) {
 
@@ -1174,6 +1543,10 @@ function selectConversation(phone) {
 }
 
 
+
+/* =====================================
+   MOSTRAR CHAT
+===================================== */
 
 function renderChat() {
 
@@ -1279,7 +1652,9 @@ function renderChat() {
       let content = "";
 
 
-      /* IMAGEN */
+      /* ===============================
+         IMAGEN
+      =============================== */
 
       if (
         message.type === "image" &&
@@ -1308,7 +1683,9 @@ function renderChat() {
 
         if (
           message.caption &&
-          String(message.caption).trim()
+          String(
+            message.caption
+          ).trim()
         ) {
 
           content +=
@@ -1320,7 +1697,9 @@ function renderChat() {
         }
 
 
-      /* AUDIO */
+      /* ===============================
+         AUDIO
+      =============================== */
 
       } else if (
         message.type === "audio" &&
@@ -1336,6 +1715,7 @@ function renderChat() {
 
 
         content +=
+
           '<div class="message-text">' +
           '🎤 Nota de voz' +
           '</div>' +
@@ -1356,7 +1736,9 @@ function renderChat() {
           '</audio>';
 
 
-      /* VIDEO */
+      /* ===============================
+         VIDEO
+      =============================== */
 
       } else if (
         message.type === "video" &&
@@ -1372,6 +1754,7 @@ function renderChat() {
 
 
         content +=
+
           '<video class="chat-video" controls preload="metadata">' +
 
           '<source src="' +
@@ -1390,10 +1773,13 @@ function renderChat() {
 
         if (
           message.caption &&
-          String(message.caption).trim()
+          String(
+            message.caption
+          ).trim()
         ) {
 
           content +=
+
             '<div class="video-caption">' +
             escapeHtml(
               message.caption
@@ -1402,7 +1788,9 @@ function renderChat() {
         }
 
 
-      /* TEXTO */
+      /* ===============================
+         TEXTO
+      =============================== */
 
       } else {
 
@@ -1445,11 +1833,21 @@ function renderChat() {
   );
 
 
-  chat.scrollTop =
-    chat.scrollHeight;
+  requestAnimationFrame(
+    function() {
+
+      chat.scrollTop =
+        chat.scrollHeight;
+
+    }
+  );
 }
 
 
+
+/* =====================================
+   CARGAR MENSAJES
+===================================== */
 
 async function loadMessages() {
 
@@ -1560,6 +1958,10 @@ async function loadMessages() {
 
 
 
+/* =====================================
+   ELEGIR IMAGEN
+===================================== */
+
 function chooseImage() {
 
   const status =
@@ -1589,6 +1991,10 @@ function chooseImage() {
 
 
 
+/* =====================================
+   IMAGEN SELECCIONADA
+===================================== */
+
 function handleImageSelected(event) {
 
   const file =
@@ -1607,7 +2013,11 @@ function handleImageSelected(event) {
   ];
 
 
-  if (!allowed.includes(file.type)) {
+  if (
+    !allowed.includes(
+      file.type
+    )
+  ) {
 
     alert(
       "La imagen debe ser JPG, JPEG o PNG."
@@ -1623,7 +2033,9 @@ function handleImageSelected(event) {
     5 * 1024 * 1024;
 
 
-  if (file.size > maxSize) {
+  if (
+    file.size > maxSize
+  ) {
 
     alert(
       "La imagen no puede superar 5 MB."
@@ -1666,6 +2078,10 @@ function handleImageSelected(event) {
 
 
 
+/* =====================================
+   QUITAR IMAGEN
+===================================== */
+
 function clearSelectedImage() {
 
   selectedImageFile =
@@ -1699,6 +2115,10 @@ function clearSelectedImage() {
 
 
 
+/* =====================================
+   BOTÓN ENVIAR
+===================================== */
+
 async function sendReply() {
 
   if (selectedImageFile) {
@@ -1712,6 +2132,10 @@ async function sendReply() {
 }
 
 
+
+/* =====================================
+   ENVIAR TEXTO
+===================================== */
 
 async function sendText() {
 
@@ -1841,6 +2265,10 @@ async function sendText() {
 
 
 
+/* =====================================
+   ENVIAR IMAGEN
+===================================== */
+
 async function sendImage() {
 
   const textarea =
@@ -1950,6 +2378,7 @@ async function sendImage() {
 
     textarea.value = "";
 
+
     clearSelectedImage();
 
 
@@ -1991,6 +2420,10 @@ async function sendImage() {
 }
 
 
+
+/* =====================================
+   INICIAR
+===================================== */
 
 loadMessages();
 
