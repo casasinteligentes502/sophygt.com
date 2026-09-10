@@ -1,15 +1,7 @@
-const { getStore } = require("@netlify/blobs");
-
-
-// ======================================================
-// OBTENER TEXTO LEGIBLE DEL MENSAJE
-// ======================================================
+import { getStore } from "@netlify/blobs";
 
 function getMessageText(message) {
-
-  if (!message) {
-    return "";
-  }
+  if (!message) return "";
 
   if (message.type === "text") {
     return message.text?.body || "";
@@ -20,7 +12,6 @@ function getMessageText(message) {
   }
 
   if (message.type === "interactive") {
-
     return (
       message.interactive?.button_reply?.title ||
       message.interactive?.list_reply?.title ||
@@ -60,34 +51,29 @@ function getMessageText(message) {
 }
 
 
-
-// ======================================================
-// FUNCIÓN PRINCIPAL
-// ======================================================
-
-exports.handler = async function (event) {
+export default async (request) => {
 
   const VERIFY_TOKEN =
     process.env.WHATSAPP_VERIFY_TOKEN;
 
 
-  // ====================================================
+  // ==========================================
   // VERIFICACIÓN DEL WEBHOOK POR META
-  // ====================================================
+  // ==========================================
 
-  if (event.httpMethod === "GET") {
+  if (request.method === "GET") {
 
-    const params =
-      event.queryStringParameters || {};
+    const url =
+      new URL(request.url);
 
     const mode =
-      params["hub.mode"];
+      url.searchParams.get("hub.mode");
 
     const token =
-      params["hub.verify_token"];
+      url.searchParams.get("hub.verify_token");
 
     const challenge =
-      params["hub.challenge"];
+      url.searchParams.get("hub.challenge");
 
 
     if (
@@ -99,10 +85,15 @@ exports.handler = async function (event) {
         "WEBHOOK VERIFICADO CORRECTAMENTE"
       );
 
-      return {
-        statusCode: 200,
-        body: challenge
-      };
+      return new Response(
+        challenge || "",
+        {
+          status: 200,
+          headers: {
+            "Content-Type": "text/plain"
+          }
+        }
+      );
     }
 
 
@@ -110,19 +101,20 @@ exports.handler = async function (event) {
       "FALLO DE VERIFICACION"
     );
 
-    return {
-      statusCode: 403,
-      body: "Verification failed"
-    };
+    return new Response(
+      "Verification failed",
+      {
+        status: 403
+      }
+    );
   }
 
 
+  // ==========================================
+  // RECEPCIÓN DE EVENTOS DE WHATSAPP
+  // ==========================================
 
-  // ====================================================
-  // RECEPCIÓN DE MENSAJES DE WHATSAPP
-  // ====================================================
-
-  if (event.httpMethod === "POST") {
+  if (request.method === "POST") {
 
     console.log(
       "WEBHOOK POST RECIBIDO"
@@ -132,9 +124,7 @@ exports.handler = async function (event) {
     try {
 
       const data =
-        JSON.parse(
-          event.body || "{}"
-        );
+        await request.json();
 
 
       console.log(
@@ -143,15 +133,13 @@ exports.handler = async function (event) {
       );
 
 
-      // Soporta mensajes reales de WhatsApp
-      // y también pruebas manuales de Meta.
-
+      // Soporta mensaje real y prueba de Meta
       const value =
-        data.entry?.[0]
+        data?.entry?.[0]
           ?.changes?.[0]
           ?.value
         ||
-        data.value
+        data?.value
         ||
         {};
 
@@ -172,64 +160,35 @@ exports.handler = async function (event) {
         value.metadata || {};
 
 
-
-      // ==================================================
-      // EVENTOS QUE NO CONTIENEN MENSAJES
-      // ==================================================
-
+      // Eventos como estados, entregado, leído, etc.
       if (messages.length === 0) {
 
         console.log(
           "POST RECIBIDO, PERO SIN MENSAJES"
         );
 
-        return {
-          statusCode: 200,
-          body: "EVENT_RECEIVED"
-        };
+        return new Response(
+          "EVENT_RECEIVED",
+          { status: 200 }
+        );
       }
 
 
-
-      // ==================================================
-      // NETLIFY BLOBS
-      // ==================================================
-
       const store =
-        getStore(
-          "whatsapp-messages"
-        );
+        getStore("whatsapp-messages");
 
 
-
-      // ==================================================
-      // GUARDAR TODOS LOS MENSAJES RECIBIDOS
-      // ==================================================
-
-      for (
-        const message
-        of messages
-      ) {
+      for (const message of messages) {
 
         const messageFrom =
-          String(
-            message.from || ""
-          );
+          String(message.from || "");
 
-
-        // Buscar el contacto correspondiente
-        // al número que envió el mensaje.
 
         const contact =
           contacts.find(
-            function (item) {
-
-              return (
-                String(item.wa_id || "") ===
-                messageFrom
-              );
-
-            }
+            item =>
+              String(item.wa_id || "") ===
+              messageFrom
           )
           ||
           contacts[0]
@@ -238,17 +197,16 @@ exports.handler = async function (event) {
 
 
         const customerName =
-          contact?.profile?.name
-          ||
-          messageFrom
-          ||
+          contact?.profile?.name ||
+          messageFrom ||
           "Cliente";
 
 
         const messageId =
-          message.id
-          ||
-          `msg-${Date.now()}`;
+          message.id ||
+          `msg-${Date.now()}-${Math.random()
+            .toString(36)
+            .slice(2, 8)}`;
 
 
         const record = {
@@ -275,10 +233,7 @@ exports.handler = async function (event) {
             new Date().toISOString(),
 
 
-          // ==============================================
-          // MUY IMPORTANTE PARA LA BANDEJA
-          // ==============================================
-
+          // Identificación para la bandeja
           direction:
             "incoming",
 
@@ -289,10 +244,7 @@ exports.handler = async function (event) {
             "received",
 
 
-          // ==============================================
-          // DATOS DEL NÚMERO DE SOPHY CANDY
-          // ==============================================
-
+          // Número empresarial Sophy Candy
           phoneNumberId:
             metadata.phone_number_id || "",
 
@@ -300,10 +252,8 @@ exports.handler = async function (event) {
             metadata.display_phone_number || "",
 
 
-          // Datos originales para diagnóstico
           raw:
             message
-
         };
 
 
@@ -318,25 +268,18 @@ exports.handler = async function (event) {
 
 
         console.log(
-          "MENSAJE GUARDADO:",
+          "MENSAJE GUARDADO COMO INCOMING:",
           key
         );
-
       }
 
 
+      return new Response(
+        "EVENT_RECEIVED",
+        { status: 200 }
+      );
 
-      // ==================================================
-      // CONFIRMACIÓN A META
-      // ==================================================
-
-      return {
-        statusCode: 200,
-        body: "EVENT_RECEIVED"
-      };
-
-    }
-    catch (error) {
+    } catch (error) {
 
       console.error(
         "WEBHOOK ERROR:",
@@ -344,27 +287,16 @@ exports.handler = async function (event) {
       );
 
 
-      // Devolvemos error para que Meta pueda
-      // reintentar si hubo un fallo temporal.
-
-      return {
-        statusCode: 500,
-        body: "WEBHOOK_ERROR"
-      };
-
+      return new Response(
+        "WEBHOOK_ERROR",
+        { status: 500 }
+      );
     }
-
   }
 
 
-
-  // ====================================================
-  // OTROS MÉTODOS NO PERMITIDOS
-  // ====================================================
-
-  return {
-    statusCode: 405,
-    body: "Method Not Allowed"
-  };
-
+  return new Response(
+    "Method Not Allowed",
+    { status: 405 }
+  );
 };
