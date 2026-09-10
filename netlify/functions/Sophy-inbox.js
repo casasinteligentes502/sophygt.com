@@ -28,7 +28,6 @@ function isAuthorized(request) {
 
 export default async (request) => {
 
-  // Protección de acceso
   if (!isAuthorized(request)) {
     return new Response("Acceso restringido - Sophy Candy", {
       status: 401,
@@ -42,11 +41,17 @@ export default async (request) => {
   const html = `
 <!DOCTYPE html>
 <html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sophy Candy - Bandeja WhatsApp</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>Sophy Candy - WhatsApp</title>
 
 <style>
 
@@ -106,24 +111,24 @@ header span {
   font-weight: bold;
 }
 
-button {
+.refresh-button {
   background: #128c7e;
   color: white;
   border: none;
   padding: 10px 18px;
-  border-radius: 6px;
+  border-radius: 7px;
   cursor: pointer;
   font-weight: bold;
 }
 
-button:hover {
+.refresh-button:hover {
   background: #0d766a;
 }
 
 .messages {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 15px;
 }
 
 .message-card {
@@ -138,7 +143,6 @@ button:hover {
   display: flex;
   justify-content: space-between;
   gap: 15px;
-  margin-bottom: 9px;
 }
 
 .customer {
@@ -149,7 +153,7 @@ button:hover {
 .phone {
   font-size: 13px;
   color: #666;
-  margin-top: 3px;
+  margin-top: 4px;
 }
 
 .date {
@@ -168,21 +172,88 @@ button:hover {
 }
 
 .type {
-  margin-top: 10px;
+  margin-top: 8px;
   font-size: 12px;
   color: #777;
 }
 
-.empty {
+/* RESPUESTA */
+
+.reply-box {
+  margin-top: 15px;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+
+.reply-box label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 7px;
+}
+
+.reply-box textarea {
+  width: 100%;
+  min-height: 75px;
+  resize: vertical;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 11px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  outline: none;
+}
+
+.reply-box textarea:focus {
+  border-color: #128c7e;
+}
+
+.reply-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 9px;
+}
+
+.send-button {
+  background: #25d366;
+  border: none;
+  color: #fff;
+  padding: 10px 17px;
+  border-radius: 7px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.send-button:hover {
+  background: #1ebe5d;
+}
+
+.send-button:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+.send-status {
+  font-size: 13px;
+}
+
+.success {
+  color: #087f5b;
+  font-weight: bold;
+}
+
+.error {
+  color: #c92a2a;
+  font-weight: bold;
+}
+
+.empty,
+.loading {
   background: white;
   padding: 40px;
   text-align: center;
   border-radius: 10px;
-}
-
-.loading {
-  text-align: center;
-  padding: 40px;
 }
 
 footer {
@@ -190,6 +261,7 @@ footer {
   font-size: 12px;
   color: #777;
   margin: 30px 0;
+  line-height: 1.5;
 }
 
 @media(max-width:700px) {
@@ -197,7 +269,7 @@ footer {
   header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 5px;
+    gap: 6px;
   }
 
   .message-header {
@@ -209,9 +281,15 @@ footer {
     align-items: flex-start;
     gap: 12px;
   }
+
+  .reply-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 </style>
+
 </head>
 
 <body>
@@ -219,12 +297,12 @@ footer {
 <header>
 
 <div>
-<h1>Surtimayoreo Sophy Candy</h1>
-<span>Bandeja de WhatsApp Business API</span>
+  <h1>Surtimayoreo Sophy Candy</h1>
+  <span>Bandeja de WhatsApp Business API</span>
 </div>
 
 <div>
-WhatsApp +502 3993 5344
+  WhatsApp +502 3993 5344
 </div>
 
 </header>
@@ -234,19 +312,31 @@ WhatsApp +502 3993 5344
 <div class="toolbar">
 
 <div class="status">
+
 Estado:
-<span class="online">● Conectado</span>
+<span class="online">
+● Conectado
+</span>
+
 <br>
+
 <span id="lastUpdate"></span>
+
 </div>
 
-<button onclick="loadMessages()">
+<button
+  class="refresh-button"
+  onclick="loadMessages()"
+>
 Actualizar mensajes
 </button>
 
 </div>
 
-<div id="messages" class="messages">
+<div
+  id="messages"
+  class="messages"
+>
 
 <div class="loading">
 Cargando mensajes...
@@ -256,8 +346,17 @@ Cargando mensajes...
 
 <footer>
 
-Los mensajes se conservan durante un máximo de 90 días.<br>
-Soporte y mantenimiento WhatsApp API: Q500.00 mensuales.
+Los mensajes se conservan durante un máximo de 90 días.
+
+<br>
+
+Soporte y mantenimiento WhatsApp API:
+<strong>Q500.00 mensuales.</strong>
+
+<br>
+
+Los cargos de Meta/WhatsApp y servicios externos
+no están incluidos.
 
 </footer>
 
@@ -267,19 +366,24 @@ Soporte y mantenimiento WhatsApp API: Q500.00 mensuales.
 
 function escapeHtml(value) {
 
-  if (value === null || value === undefined) return "";
+  if (value === null || value === undefined) {
+    return "";
+  }
 
   return String(value)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
+
 
 function formatDate(dateString) {
 
-  if (!dateString) return "";
+  if (!dateString) {
+    return "";
+  }
 
   const date = new Date(dateString);
 
@@ -296,9 +400,101 @@ function formatDate(dateString) {
   );
 }
 
+
+async function sendReply(button, phone) {
+
+  const card =
+    button.closest(".message-card");
+
+  const textarea =
+    card.querySelector(".reply-text");
+
+  const status =
+    card.querySelector(".send-status");
+
+  const text =
+    textarea.value.trim();
+
+  if (!text) {
+
+    status.textContent =
+      "Escribe un mensaje antes de enviar.";
+
+    status.className =
+      "send-status error";
+
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Enviando...";
+
+  status.textContent = "";
+  status.className = "send-status";
+
+  try {
+
+    const response = await fetch(
+      "/.netlify/functions/whatsapp-send",
+      {
+        method: "POST",
+
+        credentials: "same-origin",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          to: phone,
+          text: text
+        })
+      }
+    );
+
+    const result =
+      await response.json();
+
+    if (!response.ok || !result.success) {
+
+      throw new Error(
+        result.error ||
+        "No se pudo enviar el mensaje."
+      );
+    }
+
+    textarea.value = "";
+
+    status.textContent =
+      "✓ Mensaje enviado correctamente";
+
+    status.className =
+      "send-status success";
+
+  } catch (error) {
+
+    console.error(error);
+
+    status.textContent =
+      "Error: " + error.message;
+
+    status.className =
+      "send-status error";
+
+  } finally {
+
+    button.disabled = false;
+
+    button.textContent =
+      "Enviar WhatsApp";
+  }
+}
+
+
 async function loadMessages() {
 
-  const container = document.getElementById("messages");
+  const container =
+    document.getElementById("messages");
 
   container.innerHTML =
     '<div class="loading">Cargando mensajes...</div>';
@@ -314,17 +510,26 @@ async function loadMessages() {
     );
 
     if (response.status === 401) {
+
       window.location.reload();
+
       return;
     }
 
     if (!response.ok) {
-      throw new Error("Error " + response.status);
+
+      throw new Error(
+        "Error " + response.status
+      );
     }
 
-    const messages = await response.json();
+    const messages =
+      await response.json();
 
-    if (!Array.isArray(messages) || messages.length === 0) {
+    if (
+      !Array.isArray(messages) ||
+      messages.length === 0
+    ) {
 
       container.innerHTML =
         '<div class="empty">No hay mensajes disponibles.</div>';
@@ -336,15 +541,23 @@ async function loadMessages() {
 
     messages.forEach(message => {
 
-      const card = document.createElement("div");
+      const card =
+        document.createElement("div");
 
-      card.className = "message-card";
+      card.className =
+        "message-card";
 
       const name =
-        escapeHtml(message.name || "Cliente");
+        escapeHtml(
+          message.name || "Cliente"
+        );
+
+      const rawPhone =
+        String(message.from || "")
+          .replace(/\\D/g, "");
 
       const phone =
-        escapeHtml(message.from || "");
+        escapeHtml(rawPhone);
 
       const text =
         escapeHtml(
@@ -353,7 +566,9 @@ async function loadMessages() {
         );
 
       const type =
-        escapeHtml(message.type || "");
+        escapeHtml(
+          message.type || ""
+        );
 
       const date =
         formatDate(
@@ -388,7 +603,35 @@ async function loadMessages() {
         </div>
 
         <div class="type">
-          Tipo de mensaje: \${type}
+          Tipo de mensaje:
+          \${type}
+        </div>
+
+        <div class="reply-box">
+
+          <label>
+            Responder a \${name}
+          </label>
+
+          <textarea
+            class="reply-text"
+            maxlength="4096"
+            placeholder="Escribe aquí la respuesta para el cliente..."
+          ></textarea>
+
+          <div class="reply-actions">
+
+            <button
+              class="send-button"
+              onclick="sendReply(this, '\${phone}')"
+            >
+              Enviar WhatsApp
+            </button>
+
+            <span class="send-status"></span>
+
+          </div>
+
         </div>
 
       \`;
@@ -397,9 +640,12 @@ async function loadMessages() {
 
     });
 
-    document.getElementById("lastUpdate").textContent =
-      "Última actualización: " +
-      new Date().toLocaleTimeString("es-GT");
+    document
+      .getElementById("lastUpdate")
+      .textContent =
+        "Última actualización: " +
+        new Date()
+          .toLocaleTimeString("es-GT");
 
   } catch (error) {
 
@@ -410,10 +656,13 @@ async function loadMessages() {
   }
 }
 
+
 loadMessages();
 
-// Actualización automática cada 30 segundos
-setInterval(loadMessages, 30000);
+setInterval(
+  loadMessages,
+  30000
+);
 
 </script>
 
@@ -423,9 +672,13 @@ setInterval(loadMessages, 30000);
 
   return new Response(html, {
     status: 200,
+
     headers: {
-      "Content-Type": "text/html; charset=utf-8",
-      "Cache-Control": "no-store"
+      "Content-Type":
+        "text/html; charset=utf-8",
+
+      "Cache-Control":
+        "no-store"
     }
   });
 };
